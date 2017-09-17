@@ -13,14 +13,14 @@
   <link rel="alternate" href="/atom.xml" title="Grooes.com">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Array, Slice和 Map的区别   Array 是值类型，Slice 和 Map 是引用类型。他们是有很大区别的，尤其是在参数传递的时候。 Slice 和 Map 的变量 仅仅声明是不行的，必须还要分配空间（也就是初始化，initialization） 才可以使用。 Slice 和 Map 这些引用变量 的 内存分配，不需要你操心，因为 golang 是存在 gc 机制的（垃圾回收机制">
-<meta name="keywords" content="blog,songqinghe,������,Myron,Myron_������,qinghe Song">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go语言中的 Array, Slice和 Map">
 <meta property="og:url" content="http://grooes.com/2017/09/17/Go语言中的-Array-Slice和-Map/index.html">
 <meta property="og:site_name" content="Grooes.com">
 <meta property="og:description" content="Array, Slice和 Map的区别   Array 是值类型，Slice 和 Map 是引用类型。他们是有很大区别的，尤其是在参数传递的时候。 Slice 和 Map 的变量 仅仅声明是不行的，必须还要分配空间（也就是初始化，initialization） 才可以使用。 Slice 和 Map 这些引用变量 的 内存分配，不需要你操心，因为 golang 是存在 gc 机制的（垃圾回收机制">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-17T13:27:11.556Z">
+<meta property="og:updated_time" content="2017-09-17T13:27:42.915Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go语言中的 Array, Slice和 Map">
 <meta name="twitter:description" content="Array, Slice和 Map的区别   Array 是值类型，Slice 和 Map 是引用类型。他们是有很大区别的，尤其是在参数传递的时候。 Slice 和 Map 的变量 仅仅声明是不行的，必须还要分配空间（也就是初始化，initialization） 才可以使用。 Slice 和 Map 这些引用变量 的 内存分配，不需要你操心，因为 golang 是存在 gc 机制的（垃圾回收机制">
@@ -245,6 +245,12 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> map1 = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"key1"</span>: <span class="number">100</span>, <span class="string">"key2"</span>: <span class="number">200</span>, <span class="string">"key3"</span>: <span class="number">300</span>&#125;</div><div class="line">    <span class="keyword">for</span> k, v := <span class="keyword">range</span> map1 &#123;</div><div class="line">        fmt.Println(k, v)</div><div class="line">        <span class="keyword">if</span> k == <span class="string">"key2"</span> &#123;</div><div class="line">            <span class="built_in">delete</span>(map1, k)</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> k == <span class="string">"key3"</span> &#123;</div><div class="line">            map1[<span class="string">"key4"</span>] = <span class="number">400</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    fmt.Println(map1)</div><div class="line">&#125;</div><div class="line">程序输出：</div><div class="line">key2 <span class="number">200</span></div><div class="line">key3 <span class="number">300</span></div><div class="line">key1 <span class="number">100</span></div><div class="line"><span class="keyword">map</span>[key1:<span class="number">100</span> key4:<span class="number">400</span> key3:<span class="number">300</span>]  <span class="comment">//可以看到 map 是无序的。</span></div></pre></td></tr></table></figure>
   	</div>
 	  
+	  <div class="article-tags tags">
+      
+        <a href="/tags/go/">go</a>
+      
+	  </div>
+    
 		
 	
 		<div class="art-item-footer">
@@ -303,7 +309,7 @@
 <div class="m_widget tagcloud">
     <div class="header">Tags</div>
     <div class='content'>
-        <a href="/tags/linux/" style="font-size: 20px; color: #000">linux</a> <a href="/tags/mysql/" style="font-size: 14px; color: #808080">mysql</a> <a href="/tags/php/" style="font-size: 14px; color: #808080">php</a>
+        <a href="/tags/go/" style="font-size: 14px; color: #808080">go</a> <a href="/tags/linux/" style="font-size: 20px; color: #000">linux</a> <a href="/tags/mysql/" style="font-size: 14px; color: #808080">mysql</a> <a href="/tags/php/" style="font-size: 14px; color: #808080">php</a>
     </div>
 </div>
 
