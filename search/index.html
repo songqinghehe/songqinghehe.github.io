@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 
-  <html class="light page-page">
+  <html class="light page-search">
 
 
 <head>
@@ -19,7 +19,7 @@
 <meta property="og:title" content="search">
 <meta property="og:url" content="http://grooes.com/search/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:updated_time" content="2017-09-17T03:40:06.567Z">
+<meta property="og:updated_time" content="2017-09-17T03:54:42.718Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="search">
 
@@ -84,8 +84,17 @@
     <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
   
 
-  <div class="post-header CENTER">
-   
+  <div class="content content-search">
+  <div class="page-header">
+
+  
+    <div class="breadcrumb">
+      <div class="location">搜索</div>
+      <i class="icon-location"></i>
+    </div>
+  
+
+  
   <div class="toolbox">
     <a class="toolbox-entry" href="/">
       <span class="toolbox-entry-text">盒子</span>
@@ -142,101 +151,38 @@
   </div>
 
 
-</div>
 
-
-
-
-<div class="content content-post CENTER">
-   <article id="page-" class="article article-type-page" itemprop="blogPost">
-  <header class="article-header">
-    <h1 class="post-title">search</h1>
-
-    <div class="article-meta">
-      <span>
-        <i class="icon-calendar"></i>
-        <span>2017.09.17</span>
-      </span>
-
-      
-        <span class="article-author">
-          <i class="icon-user"></i>
-          <span>John Doe</span>
-        </span>
-      
-
-      
-
-
-      
-        <span>
-          <i class="icon-comment"></i>
-          <a href="http://www.grooes.com/search/index.html#disqus_thread"></a>
-        </span>
-      
-
-      
-      <i class="fa fa-eye"></i> 
-        <span id="busuanzi_container_page_pv">
-           &nbsp热度 <span id="busuanzi_value_page_pv">
-           <i class="fa fa-spinner fa-spin"></i></span>℃
-        </span>
-      
-
-      
-      
-    </div>
-  </header>
-
-  <div class="article-content">
-    
-      
-    
-  </div>
-</article>
-
-
-   
-  <div class="text-center donation">
-    <div class="inner-donation">
-      <span class="btn-donation">支持一下</span>
-      <div class="donation-body">
-        <div class="tip text-center">扫一扫，支持forsigner</div>
-        <ul class="theme.donation.items.length">
-        
-          <li class="item">
-            <img src="/images/weixin.jpg" alt="">
-          </li>
-        
-          <li class="item">
-            <img src="/images/alipay.jpg" alt="">
-          </li>
-        
-        </ul>
+  <div class="box-blog-info">
+    <a class="avatar" href="/">
+      <img src="/images/avatar.jpg" alt="" />
+    </a>
+    <div class="info">
+      <h3 class="name" style="font-family: calligraffittiregular">
+        Grooes.com
+      </h3>
+      <div class="slogan">
+        The power of expression
       </div>
     </div>
   </div>
 
+</div>
 
-   
-  <div class="box-prev-next clearfix">
-    <a class="hide pull-left" href="/">
-        <i class="icon icon-angle-left"></i>
-    </a>
-    <a class="hide pull-right" href="/">
-        <i class="icon icon-angle-right"></i>
-    </a>
+  <div class="wrap-search-box">
+    <div class="search-box">
+      <input id="input-search"  class="input-search" type="text" placeholder="search">
+      <i class="icon-search"></i>
+    </div>
   </div>
 
-
-
+  <ul id="list-search" class="list-search">
+    
+      <li class="tip">Can you find the bug of world ~</li>
+    
+  </ul>
 
 </div>
 
-
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
 
 
 
@@ -304,44 +250,6 @@
 
 
   
-      <div class="fexo-comments comments-page">
-    
-  <section class="disqus-comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-  </section>
-
-  <script>
-    var disqus_shortname = 'forsigner';
-    
-    var disqus_url = 'http://grooes.com/search/index.html';
-    
-    (function(){
-      var dsq = document.createElement('script');
-      dsq.type = 'text/javascript';
-      dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-
-  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
-
-
-
-    
-
-
-
-
-    
-
-    
-	
-  </div>
-
-  
 
   <script type="text/javascript">
   function loadScript(url, callback) {
@@ -373,5 +281,20 @@
   }
 </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
