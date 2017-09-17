@@ -1,212 +1,257 @@
+/* eslint-disable */
+var customSearch;
+(function ($) {
 
-(function() {
-  'use strict';
+	"use strict";
+	const scrollCorrection = 70; // (header height = 50px) + (gap = 20px)
+	function scrolltoElement(elem, correction) {
+		correction = correction || scrollCorrection;
+		const $elem = elem.href ? $(elem.getAttribute('href')) : $(elem);
+		$('html, body').animate({ 'scrollTop': $elem.offset().top - correction }, 400);
+	};
 
-  var $html = document.documentElement;
-  var $body = document.body;
-  var $toc = document.getElementById('toc');
-  var $backTop = document.getElementById('backTop');
-  var $toolboxMobile = document.getElementById('toolbox-mobile');
-  var $cover = document.getElementById('cover');
-  var $close = document.getElementById('close');
-  var $modalDialog = document.getElementById('modal-dialog');
-  var scrollTop = 0;
-  var tocTop = 20;
+	function setHeader() {
+		if (!window.subData) return;
+		const $wrapper = $('header .wrapper');
+		const $comment = $('.s-comment', $wrapper);
+		const $toc = $('.s-toc', $wrapper);
+		const $top = $('.s-top',$wrapper);
 
-  (function init() {
-    if ($backTop) {
-      $body.scrollTop > 10 ? Util.addClass($backTop, 'show') : Util.removeClass($backTop, 'show');
-    }
+		$wrapper.find('.nav-sub .logo').text(window.subData.title);
+		let pos = document.body.scrollTop;
+		$(document, window).scroll(() => {
+			const scrollTop = $(window).scrollTop();
+			const del = scrollTop - pos;
+			if (del >= 20) {
+				pos = scrollTop;
+				$wrapper.addClass('sub');
+			} else if (del <= -20) {
+				pos = scrollTop;
+				$wrapper.removeClass('sub');
+			}
+		});
+		// bind events to every btn
+		const $commentTarget = $('#comments');
+		if ($commentTarget.length) {
+			$comment.click(e => { e.preventDefault(); e.stopPropagation(); scrolltoElement($commentTarget); });
+		} else $comment.remove();
 
-    if ($toc) {
-      var tocHeight = parseInt(window.getComputedStyle($toc)['height'], 10);
-      var winHeight = document.documentElement.clientHeight;
-      if (tocHeight + 20 > winHeight) {
-          return;
-      }
-      $body.scrollTop > 180 ? Util.addClass($toc, 'fixed') : Util.removeClass($toc, 'fixed');
-    }
+		const $tocTarget = $('.toc-wrapper');
+		if ($tocTarget.length && $tocTarget.children().length) {
+			$toc.click((e) => { e.stopPropagation(); $tocTarget.toggleClass('active'); });
+		} else $toc.remove();
 
-  }());
+		$top.click(()=>scrolltoElement(document.body));
 
-  document.addEventListener('DOMContentLoaded', function() {
-    FastClick.attach(document.body);
-  }, false);
+	}
+	function setHeaderMenu() {
+		var $headerMenu = $('header .menu');
+		var $underline = $headerMenu.find('.underline');
+		function setUnderline($item, transition) {
+			$item = $item || $headerMenu.find('li a.active');//get instant
+			transition = transition === undefined ? true : !!transition;
+			if (!transition) $underline.addClass('disable-trans');
+			if ($item && $item.length) {
+				$item.addClass('active').siblings().removeClass('active');
+				$underline.css({
+					left: $item.position().left,
+					width: $item.innerWidth()
+				});
+			} else {
+				$underline.css({
+					left: 0,
+					width: 0
+				});
+			}
+			if (!transition) {
+				setTimeout(function () { $underline.removeClass('disable-trans') }, 0);//get into the queue.
+			}
+		}
+		$headerMenu.on('mouseenter', 'li', function (e) {
+			setUnderline($(e.currentTarget));
+		});
+		$headerMenu.on('mouseout', function () {
+			setUnderline();
+		});
+		//set current active nav
+		var $active_link = null;
+		if (location.pathname === '/' || location.pathname.startsWith('/page/')) {
+			$active_link = $('.nav-home', $headerMenu);
+		} else {
+			var name = location.pathname.match(/\/(.*?)\//);
+			if (name.length > 1) {
+				$active_link = $('.nav-' + name[1], $headerMenu);
+			}
+		}
+		setUnderline($active_link, false);
+	}
+	function setHeaderMenuPhone() {
+		var $switcher = $('.l_header .switcher .s-menu');
+		$switcher.click(function (e) {
+			e.stopPropagation();
+			$('body').toggleClass('z_menu-open');
+			$switcher.toggleClass('active');
+		});
+		$(document).click(function (e) {
+			$('body').removeClass('z_menu-open');
+			$switcher.removeClass('active');
+		});
+	}
+	function setHeaderSearch() {
+		var $switcher = $('.l_header .switcher .s-search');
+		var $header = $('.l_header');
+		var $search = $('.l_header .m_search');
+		if ($switcher.length === 0) return;
+		$switcher.click(function (e) {
+			e.stopPropagation();
+			$header.toggleClass('z_search-open');
+			$search.find('input').focus();
+		});
+		$(document).click(function (e) {
+			$header.removeClass('z_search-open');
+		});
+		$search.click(function (e) {
+			e.stopPropagation();
+		})
+	}
+	function setWaves() {
+		Waves.attach('.flat-btn', ['waves-button']);
+		Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+		Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+		Waves.attach('.flat-box', ['waves-block']);
+		Waves.attach('.float-box', ['waves-block', 'waves-float']);
+		Waves.attach('.waves-image');
+		Waves.init();
+	}
+	function setScrollReveal() {
+		const $reveal = $('.reveal');
+		if ($reveal.length === 0) return;
+		const sr = ScrollReveal({ distance: 0 });
+		sr.reveal('.reveal');
+	}
+	function setTocToggle() {
+		const $toc = $('.toc-wrapper');
+		if ($toc.length === 0) return;
+		$toc.click((e) => { e.stopPropagation(); $toc.addClass('active'); });
+		$(document).click(() => $toc.removeClass('active'));
 
-  window.noZensmooth = true;
+		$toc.on('click', 'a', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			scrolltoElement(e.target.tagName.toLowerCase === 'a' ? e.target : e.target.parentElement);
+		});
 
-  // scroll spy
-  scrollSpy.init({
-    nodeList: document.querySelectorAll('.toc-link'),
-    scrollTarget: window
-  });
+		const liElements = Array.from($toc.find('li a'));
+		//function animate above will convert float to int.
+		const getAnchor = () => liElements.map(elem => Math.floor($(elem.getAttribute('href')).offset().top - scrollCorrection));
 
-  // toc and backTop
-  Util.bind(window, 'scroll', function() {
-    scrollTop = $body.scrollTop;
-    if ($toc) {
-      var tocHeight = parseInt(window.getComputedStyle($toc)['height'], 10);
-      var winHeight = document.documentElement.clientHeight;
-      if (tocHeight + 20 > winHeight) {
-          return;
-      }
-      
-      scrollTop > 180 ? Util.addClass($toc, 'fixed') : Util.removeClass($toc, 'fixed');
-    }
+		let anchor = getAnchor();
+		const scrollListener = () => {
+			const scrollTop = $('html').scrollTop() || $('body').scrollTop();
+			if (!anchor) return;
+			//binary search.
+			let l = 0, r = anchor.length - 1, mid;
+			while (l < r) {
+				mid = (l + r + 1) >> 1;
+				if (anchor[mid] === scrollTop) l = r = mid;
+				else if (anchor[mid] < scrollTop) l = mid;
+				else r = mid - 1;
+			}
+			$(liElements).removeClass('active').eq(l).addClass('active');
+		}
+		$(window)
+			.resize(() => {
+				anchor = getAnchor();
+				scrollListener();
+			})
+			.scroll(() => {
+				scrollListener()
+			});
+		scrollListener();
+	}
 
-    if ($backTop) {
-      scrollTop > 10 ? Util.addClass($backTop, 'show') : Util.removeClass($backTop, 'show');
-    }
-  });
+	// function getPicture() {
+	// 	const $banner = $('.banner');
+	// 	if ($banner.length === 0) return;
+	// 	const url = ROOT + 'js/lovewallpaper.json';
+	// 	$.get(url).done(res => {
+	// 		if (res.data.length > 0) {
+	// 			const index = Math.floor(Math.random() * res.data.length);
+	// 			$banner.css('background-image', 'url(' + res.data[index].big + ')');
+	// 		}
+	// 	})
+	// }
 
-  if ($backTop) {
-    Util.bind($backTop, 'click', function() {
-      zenscroll.to($body)
-    });
-  }
-
-  if ($toc) {
-    var $toc = document.getElementById('toc');
-    var $tocLinks = document.querySelectorAll('.toc-link');
-    var links = Array.prototype.slice.call($tocLinks);
-
-    links.forEach(function(element) {
-      Util.bind(element, 'click', function(e) {
-        var $target = document.getElementById(this.hash.substring(1));
-        zenscroll.to($target)
-        e.preventDefault();
-      });
-    });
-  }
-
-  if ($toolboxMobile) {
-    Util.bind($toolboxMobile, 'click', function() {
-      Util.addClass($modalDialog, 'show-dialog')
-      Util.removeClass($modalDialog, 'hide-dialog');
-
-      Util.addClass($cover, 'show')
-      Util.removeClass($cover, 'hide');
-    });
-
-
-    Util.bind($cover, 'click', closeModal);
-    Util.bind($close, 'click', closeModal);
-  }
-
-
-  if (location.pathname === '/search/') {
-    Util.request('GET', '/search.json', function(data) {
-      var $inputSearch = document.getElementById('input-search');
-      Util.bind($inputSearch, 'keyup', function() {
-        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-
-        if (this.value.trim().length <= 0) {
-          return;
-        }
-
-        var results = filterPosts(data, keywords);
-        var $listSearch = document.getElementById('list-search');
-        $listSearch.innerHTML = createInnerHTML(results);
-      });
-
-    });
-  }
-
-
-  ///////////////////
-
-  function filterPosts(data, keywords) {
-    var results = [];
-
-    data.forEach(function(item) {
-      var isMatch = false;
-      var matchKeyWords = [];
-      item.content = item.content.replace(/<[^>]*>/g, '');
-
-      keywords.forEach(function(word) {
-        var reg = new RegExp(word, 'i');
-        var indexTitle = item.title.search(reg);
-        var indexContent = item.content.search(reg);
-
-        if (indexTitle > -1 || indexContent > -1) {
-          isMatch = true;
-          matchKeyWords.push(word);
-        }
-      });
-
-      if (isMatch) {
-        item.matchKeyWords = matchKeyWords;
-        results.push(item);
-      }
-    });
-
-    return results;
-  }
-
-  function createInnerHTML(results) {
-    var content = '';
-    results.forEach(function(item) {
-      var postContent;
-      postContent = highlightText(item.content, item.matchKeyWords);
-      postContent = getPreviewContent(postContent, item.matchKeyWords);
-
-      item.title = highlightText(item.title, item.matchKeyWords);
-
-      item = '<li class="item">' +
-        '<a href="' + item.url + '"" target="_blank">' +
-        '<h3 class="title">' + item.title + '</h3>' +
-        '</a>' +
-        '<p class="post-content">' + postContent + '</h3>' +
-        '</li>';
-      content += item;
-    });
-
-    return content;
-  }
-
-  function getPreviewContent(content, matchKeyWords) {
-    var isMatch = false;
-    var index = 0;
-    matchKeyWords.forEach(function(word) {
-      var reg = new RegExp(word, 'i');
-      index = content.search(reg);
-      if (index < 0) {
-        return;
-      }
-
-      isMatch = true;
-    });
-
-    if (isMatch) {
-      if (index < 120) {
-        content = content.substr(0, 140);
-      } else {
-        content = content.substr(index - 60, 200);
-      }
-    } else {
-      content = content.substr(0, 120);
-    }
-
-    return content;
-  }
-
-  function highlightText(text, matchKeyWords) {
-    text = text.replace(/<[^>]*>/g, '');
-    matchKeyWords.forEach(function(word) {
-      var reg = new RegExp('(' + word + ')', 'ig');
-      text = text.replace(reg, '<span class="color-hightlight">$1</span>');
-    });
-
-    return text;
-  }
+	// function getHitokoto() {
+	// 	const $hitokoto = $('#hitokoto');
+	// 	if($hitokoto.length === 0) return;
+	// 	const url = 'http://api.hitokoto.us/rand?length=80&encode=jsc&fun=handlerHitokoto';
+	// 	$('body').append('<script	src="%s"></script>'.replace('%s',url));
+	// 	window.handlerHitokoto = (data) => {
+	// 		$hitokoto
+	// 			.css('color','transparent')
+	// 			.text(data.hitokoto)
+	// 		if(data.source) $hitokoto.append('<cite> ——  %s</cite>'.replace('%s',data.source));
+	// 		else if(data.author) $hitokoto.append('<cite> ——  %s</cite>'.replace('%s',data.author));
+	// 		$hitokoto.css('color','white');
+	// 	}
+	// }
 
 
-  function closeModal() {
-    Util.addClass($modalDialog, 'hide-dialog')
-    Util.removeClass($modalDialog, 'show-dialog');
-    Util.addClass($cover, 'hide')
-    Util.removeClass($cover, 'show');
-  }
+	$(function () {
+		//set header
+		setHeader();
+		setHeaderMenu();
+		setHeaderMenuPhone();
+		setHeaderSearch();
+		setWaves();
+		setScrollReveal();
+		setTocToggle();
+		// getHitokoto();
+		// getPicture();
 
 
-}());
+		$(".article .video-container").fitVids();
+
+		setTimeout(function () {
+			$('#loading-bar-wrapper').fadeOut(500);
+		}, 300);
+
+		if (SEARCH_SERVICE === 'google') {
+			customSearch = new GoogleCustomSearch({
+				apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+				engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+				imagePath: "/images/"
+			});
+		}
+		else if (SEARCH_SERVICE === 'algolia') {
+			customSearch = new AlgoliaSearch({
+				apiKey: ALGOLIA_API_KEY,
+				appId: ALGOLIA_APP_ID,
+				indexName: ALGOLIA_INDEX_NAME,
+				imagePath: "/images/"
+			});
+		}
+		else if (SEARCH_SERVICE === 'hexo') {
+			customSearch = new HexoSearch({
+				imagePath: "/images/"
+			});
+		}
+		else if (SEARCH_SERVICE === 'azure') {
+			customSearch = new AzureSearch({
+				serviceName: AZURE_SERVICE_NAME,
+				indexName: AZURE_INDEX_NAME,
+				queryKey: AZURE_QUERY_KEY,
+				imagePath: "/images/"
+			});
+		}
+		else if (SEARCH_SERVICE === 'baidu') {
+			customSearch = new BaiduSearch({
+				apiId: BAIDU_API_ID,
+				imagePath: "/images/"
+			});
+		}
+
+	});
+
+})(jQuery);
