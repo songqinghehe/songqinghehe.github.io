@@ -17,6 +17,8 @@
 <meta name="twitter:title" content="categories">
   
   
+    <link rel="icon" href="/favicon.png">
+  
   
     <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   
@@ -33,7 +35,7 @@
     <nav class="nav">
          <div class="nav-left">
             <a href="/" class="nav-item" style="font-size: 20px;">
-              <span class="logo"></span>'s Blog
+              <span class="logo">songqinghe</span>'s Blog
             </a>
          </div>
         <div class="nav-center is-hidden position-relative" id="search_container">
@@ -107,8 +109,8 @@
             </h1>
             
             <div class="is-flex align-center">
-                <img class="post-avatar" src="">
-                <span style="padding:0 10px;"> <span class="sub-title">By</span> </span>
+                <img class="post-avatar" src="http://tvax2.sinaimg.cn/crop.123.0.676.676.180/7f5bc367ly8ff7csw60m1j20m80isgou.jpg">
+                <span style="padding:0 10px;"> <span class="sub-title">By</span> songqinghe</span>
                 <span class="post-date sub-title">at: 2017-09-17</span>
             </div>
             
@@ -117,6 +119,25 @@
             
         </div>
         <div class="post-reply">
+            
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTE4Ni81NzUz">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
             
             
         </div>
@@ -162,5 +183,20 @@
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
