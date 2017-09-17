@@ -165,19 +165,19 @@
 </li>
 </ul>
 <h3 id="Slice-的用法"><a href="#Slice-的用法" class="headerlink" title="Slice 的用法"></a>Slice 的用法</h3><blockquote>
-<p>Slice 的声明（没有分配内存）<br><figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> s1 []<span class="keyword">int</span></div></pre></td></tr></table></figure></p>
+<p>Slice 的声明（没有分配内存）</p>
 </blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> s1 []<span class="keyword">int</span></div></pre></td></tr></table></figure>
 <ul>
 <li>在创建切片的时候，不要指定切片的长度。（否则就成了数组）</li>
 <li>切片的类型可以是Go 语言的任何基本数据类型（也包括 引用类型和 Struct 类型）</li>
 <li>当一个切片被声明之后，没有初始化的时候，这个 s1 默认的值是 nil。切片的长度是0。可以使用内建函数 len() 获得切片的长度，使用内建函数 cap() 获得切片的容量。</li>
-<li><p>Slice 的创建 (分配了内存)</p>
+</ul>
 <blockquote>
 <p>Slice 的创建 (分配了内存)</p>
 </blockquote>
-</li>
-<li><p>三种创建方式： 基于底层数组创建，直接创建，或者 make() 函数创建</p>
-</li>
+<ul>
+<li>三种创建方式： 基于底层数组创建，直接创建，或者 make() 函数创建</li>
 <li><p>基于底层数组创建 slice</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> slice1 []<span class="keyword">int</span>   <span class="comment">//声明但是不分配空间</span></div><div class="line">slice1 = array[start:end]  <span class="comment">//这里不包含 end</span></div><div class="line">slice2 := array[:]         <span class="comment">// 引用全部的元素</span></div><div class="line">slice3 := array[<span class="number">0</span>:<span class="built_in">len</span>(array)]</div><div class="line"><span class="keyword">var</span> slice4 []<span class="keyword">int</span></div><div class="line">sliec34 = array    <span class="comment">//引用全部的元素</span></div></pre></td></tr></table></figure>
 </li>
@@ -213,7 +213,7 @@
 <li>同一个底层数组之间的 元素复制，会导致元素重叠问题。<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> slice1 = []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>&#125;</div><div class="line">    <span class="keyword">var</span> slice2 = <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>, <span class="number">5</span>)</div><div class="line">    <span class="keyword">var</span> n <span class="keyword">int</span></div><div class="line">    n = <span class="built_in">copy</span>(slice2, slice1) <span class="comment">// just copy three elements</span></div><div class="line">    fmt.Println(n, slice2, <span class="built_in">len</span>(slice2), <span class="built_in">cap</span>(slice2))</div><div class="line"></div><div class="line">    slice3 := slice1[<span class="number">3</span>:<span class="number">6</span>]   <span class="comment">//二者引用同一个底层数组</span></div><div class="line">    n = <span class="built_in">copy</span>(slice3, slice1[<span class="number">1</span>:<span class="number">5</span>])  <span class="comment">//所以，copy的时候发生元素重叠</span></div><div class="line">    fmt.Println(n, slice1, slice3)</div><div class="line"></div><div class="line">&#125;</div><div class="line">程序输出为：</div><div class="line"><span class="number">3</span> [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>] <span class="number">3</span> <span class="number">5</span></div><div class="line"><span class="number">3</span> [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>] [<span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]   <span class="comment">//可以看到元素重叠</span></div></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="Map-的用法"><a href="#Map-的用法" class="headerlink" title="Map 的用法"></a>Map 的用法</h3><h5 id="map-存储的是-键值对-key-value-。是一个无序的数据的集合，通过键来进行索引得到对应的值。-这种方式可以加快查找速度。Map-通常称为-字典（dictionary）-或者哈希表-Hash-table-。Map-现在是很多语言的标配。"><a href="#map-存储的是-键值对-key-value-。是一个无序的数据的集合，通过键来进行索引得到对应的值。-这种方式可以加快查找速度。Map-通常称为-字典（dictionary）-或者哈希表-Hash-table-。Map-现在是很多语言的标配。" class="headerlink" title="map 存储的是 键值对(key-value)。是一个无序的数据的集合，通过键来进行索引得到对应的值。 这种方式可以加快查找速度。Map 通常称为 字典（dictionary） 或者哈希表(Hash table)。Map 现在是很多语言的标配。"></a>map 存储的是 键值对(key-value)。是一个无序的数据的集合，通过键来进行索引得到对应的值。 这种方式可以加快查找速度。Map 通常称为 字典（dictionary） 或者哈希表(Hash table)。Map 现在是很多语言的标配。</h5><blockquote>
+<h3 id="Map-的用法"><a href="#Map-的用法" class="headerlink" title="Map 的用法"></a>Map 的用法</h3><h4 id="map-存储的是-键值对-key-value-。是一个无序的数据的集合，通过键来进行索引得到对应的值。-这种方式可以加快查找速度。Map-通常称为-字典（dictionary）-或者哈希表-Hash-table-。Map-现在是很多语言的标配。"><a href="#map-存储的是-键值对-key-value-。是一个无序的数据的集合，通过键来进行索引得到对应的值。-这种方式可以加快查找速度。Map-通常称为-字典（dictionary）-或者哈希表-Hash-table-。Map-现在是很多语言的标配。" class="headerlink" title="map 存储的是 键值对(key-value)。是一个无序的数据的集合，通过键来进行索引得到对应的值。 这种方式可以加快查找速度。Map 通常称为 字典（dictionary） 或者哈希表(Hash table)。Map 现在是很多语言的标配。"></a>map 存储的是 键值对(key-value)。是一个无序的数据的集合，通过键来进行索引得到对应的值。 这种方式可以加快查找速度。Map 通常称为 字典（dictionary） 或者哈希表(Hash table)。Map 现在是很多语言的标配。</h4><blockquote>
 <p>字典的声明</p>
 </blockquote>
 <ul>
@@ -288,9 +288,9 @@
     
 	  <div class="full-width auto-padding tags">
       
-        <a href="/tags/linux/">linux</a>
-      
         <a href="/tags/mysql/">mysql</a>
+      
+        <a href="/tags/linux/">linux</a>
       
 	  </div>
     
@@ -425,9 +425,9 @@
     
 	  <div class="full-width auto-padding tags">
       
-        <a href="/tags/php/">php</a>
-      
         <a href="/tags/linux/">linux</a>
+      
+        <a href="/tags/php/">php</a>
       
 	  </div>
     
