@@ -1,139 +1,149 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  
-  <title>Go语言中的 Array, Slice和 Map | Grooes.com</title>
-  <meta name="description" content="The power of expression" />
-  <meta name="keywords" content="blog,songqinghe,宋庆鹤,Myron,Myron_宋庆鹤,qinghe Song" />
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="shortcut icon" href="/images/favicon.jpg">
-  <link rel="alternate" href="/atom.xml" title="Grooes.com">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Array, Slice和 Map的区别   Array 是值类型，Slice 和 Map 是引用类型。他们是有很大区别的，尤其是在参数传递的时候。 Slice 和 Map 的变量 仅仅声明是不行的，必须还要分配空间（也就是初始化，initialization） 才可以使用。 Slice 和 Map 这些引用变量 的 内存分配，不需要你操心，因为 golang 是存在 gc 机制的（垃圾回收机制">
-<meta name="keywords" content="go">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Go语言中的 Array, Slice和 Map">
-<meta property="og:url" content="http://grooes.com/2017/09/17/Go语言中的-Array-Slice和-Map/index.html">
-<meta property="og:site_name" content="Grooes.com">
-<meta property="og:description" content="Array, Slice和 Map的区别   Array 是值类型，Slice 和 Map 是引用类型。他们是有很大区别的，尤其是在参数传递的时候。 Slice 和 Map 的变量 仅仅声明是不行的，必须还要分配空间（也就是初始化，initialization） 才可以使用。 Slice 和 Map 这些引用变量 的 内存分配，不需要你操心，因为 golang 是存在 gc 机制的（垃圾回收机制">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-17T13:31:38.101Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go语言中的 Array, Slice和 Map">
-<meta name="twitter:description" content="Array, Slice和 Map的区别   Array 是值类型，Slice 和 Map 是引用类型。他们是有很大区别的，尤其是在参数传递的时候。 Slice 和 Map 的变量 仅仅声明是不行的，必须还要分配空间（也就是初始化，initialization） 才可以使用。 Slice 和 Map 这些引用变量 的 内存分配，不需要你操心，因为 golang 是存在 gc 机制的（垃圾回收机制">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable"  content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <link rel="dns-prefetch" href="//t11.baidu.com">
+    <!--SEO-->
+
+<meta name="description" content="The power of expression"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Go语言中的 Array, Slice和 Map | Grooes.com</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="Grooes.com" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
     
-  <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-  <link href='//cdn.bootcss.com/node-waves/0.7.5/waves.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="/style.css">
-  <script>
-    function setLoadingBarProgress(num) {
-      document.getElementById('loading-bar').style.width=num+"%";
-    }
-  </script>
+
+
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css?rev=9.12.0">
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+    
+    
 </head>
 
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
 <body>
-  <div id="loading-bar-wrapper">
-  <div id="loading-bar"></div>
+    <header class="main-header">
+    <div class="main-header-box">
+        <a class="branding" href="/" title="">
+            <img src="/img/header_logo.png" alt="Snippet 博客主题">
+        </a>
+        <h2 class="text-hide">Snippet主题</h2>
+        <img src="/img/header_logo.png" alt="Snippet 博客主题" class="hide">
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class=""><a href="/">首页</a></li>
+                        
+                            <li role="presentation" class=""><a href="/categories/前端/">前端</a></li>
+                        
+                            <li role="presentation" class=""><a href="/categories/后端/">后端</a></li>
+                        
+                            <li role="presentation" class=""><a href="/categories/工具/">工具</a></li>
+                        
+                            <li role="presentation" class=""><a href="/categories/资源/">资源</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Go语言中的 Array, Slice和 Map">
+            
+            Go语言中的 Array, Slice和 Map
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>无</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            go
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2017/09/17</span>
+    </span>
 </div>
 
-
-  <script>setLoadingBarProgress(20)</script> 
-  <header class="l_header">
-	<div class='wrapper'>
-		<div class="nav-main container container--flex">
-			<a class="logo flat-box" href='/' >
-				Grooes.com
-			</a>
-			<div class='menu'>
-				<ul class='h-list'>
-					
-						<li>
-							<a class='flat-box nav-home' href='/'>
-								Home
-							</a>
-						</li>
-					
-						<li>
-							<a class='flat-box nav-archives' href='/archives'>
-								Archives
-							</a>
-						</li>
-					
-				</ul>
-				<div class='underline'></div>
-			</div>
-			
-				<div class="m_search">
-					<form name="searchform" class="form u-search-form">
-						<input type="text" class="input u-search-input" placeholder="Search" />
-						<span class="icon icon-search"></span>
-					</form>
-				</div>
-			
-			<ul class='switcher h-list'>
-				
-					<li class='s-search'><a href='javascript:void(0)'><span class="icon icon-search flat-box"></span></a></li>
-				
-				<li class='s-menu'><a href='javascript:void(0)'><span class="icon icon-menu flat-box"></span></a></li>
-			</ul>
-		</div>
-		
-		<div class='nav-sub container container--flex'>
-			<a class="logo" class="flat-box" href='javascript:void(0)'>
-				Word of Forks
-			</a>
-
-			<ul class='switcher h-list'>
-				<li class='s-comment'><a href='javascript:void(0)'><span class="icon icon-chat_bubble_outline flat-box"></span></a></li>
-				<li class='s-top'><a href='javascript:void(0)'><span class="icon icon-arrow_upward flat-box"></span></a></li>
-				<li class='s-toc'><a href='javascript:void(0)'><span class="icon icon-format_list_numbered flat-box"></span></a></li>
-			</ul>
-		</div>
-	</div>
-</header>
-<aside class="menu-phone">
-	<nav>
-		
-			<a href="/" class="nav-home nav">
-				Home
-			</a>
-		
-			<a href="/archives" class="nav-archives nav">
-				Archives
-			</a>
-		
-	</nav>
-</aside>
-
-    <script>setLoadingBarProgress(40);</script>
-  <div class="l_body">
-    <div class='container clearfix'>
-      <div class='l_main'>
-        <article id="post-Go语言中的-Array-Slice和-Map"
-  class="post white-box article-type-post"
-  itemscope itemprop="blogPost">
-	<section class='meta'>
-	<h2 class="title">
-  	<a href="/2017/09/17/Go语言中的-Array-Slice和-Map/">
-    	Go语言中的 Array, Slice和 Map
-    </a>
-  </h2>
-	<time>
-	  9月 17, 2017
-	</time>
-	
-	</section>
-	
-		<section class="toc-wrapper"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Array-的用法"><span class="toc-number">1.</span> <span class="toc-text">Array 的用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Slice-的用法"><span class="toc-number">2.</span> <span class="toc-text">Slice 的用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map-的用法"><span class="toc-number">3.</span> <span class="toc-text">Map 的用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#map-存储的是-键值对-key-value-。是一个无序的数据的集合，通过键来进行索引得到对应的值。-这种方式可以加快查找速度。Map-通常称为-字典（dictionary）-或者哈希表-Hash-table-。Map-现在是很多语言的标配。"><span class="toc-number">3.1.</span> <span class="toc-text">map 存储的是 键值对(key-value)。是一个无序的数据的集合，通过键来进行索引得到对应的值。 这种方式可以加快查找速度。Map 通常称为 字典（dictionary） 或者哈希表(Hash table)。Map 现在是很多语言的标配。</span></a></li></ol></li></ol></section>
-	
-	<section class="article typo">
-  	<div class="article-entry" itemprop="articleBody">
-    	<blockquote>
+            
+            
+    </div>
+    
+    <div class="post-body">
+        <blockquote>
 <p>Array, Slice和 Map的区别</p>
 </blockquote>
 <ul>
@@ -243,126 +253,140 @@
 </li>
 </ul>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"fmt"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> map1 = <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"key1"</span>: <span class="number">100</span>, <span class="string">"key2"</span>: <span class="number">200</span>, <span class="string">"key3"</span>: <span class="number">300</span>&#125;</div><div class="line">    <span class="keyword">for</span> k, v := <span class="keyword">range</span> map1 &#123;</div><div class="line">        fmt.Println(k, v)</div><div class="line">        <span class="keyword">if</span> k == <span class="string">"key2"</span> &#123;</div><div class="line">            <span class="built_in">delete</span>(map1, k)</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> k == <span class="string">"key3"</span> &#123;</div><div class="line">            map1[<span class="string">"key4"</span>] = <span class="number">400</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    fmt.Println(map1)</div><div class="line">&#125;</div><div class="line">程序输出：</div><div class="line">key2 <span class="number">200</span></div><div class="line">key3 <span class="number">300</span></div><div class="line">key1 <span class="number">100</span></div><div class="line"><span class="keyword">map</span>[key1:<span class="number">100</span> key4:<span class="number">400</span> key3:<span class="number">300</span>]  <span class="comment">//可以看到 map 是无序的。</span></div></pre></td></tr></table></figure>
-  	</div>
-	  
-	  <div class="article-tags tags">
-      
-        <a href="/tags/go/">go</a>
-      
-	  </div>
-    
-		
-	
-		<div class="art-item-footer">
-				
-				
-					<span class="art-item-right">next：<a href="/2017/09/17/mysql安装那点事儿/" rel="next"  title="mysql安装那点事儿">
-						mysql安装那点事儿
-					</a><i class="icon icon-chevron-thin-right"></i></span>
-				
-		</div>
-	
-	</section>
-	
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明: 商业转载请联系作者获得授权,非商业转载请注明出处 © Snippet
+            
+        </div>
+        <div>
+            
+                版权声明: <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">
+知识共享署名-非商业性使用-禁止演绎 3.0 未本地化版本许可协议（CC BY-NC-ND 3.0）
+</a>
+            
+        </div>  
+    </div>
 </article>
-<script>
-	window.subData = {
-		title: 'Go语言中的 Array, Slice和 Map',
-		tools: true
-	}
-</script>
 
-      </div>
-      <aside class='l_side'>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2017/09/17/mysql安装那点事儿/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
         
-  <section class='m_widget about'>
+    <div id="uyan_frame"></div>
+    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
 
-<img class='avatar waves-image' src='/images/avatar.jpg' />
 
-<div class='header'>qinghe Song</div>
-<div class='content'>
-<div class='desc'>Tempora mutantur, nos et mutamur in illis ...</div>
-</div>
-</section>
 
-  <section class='m_widget links'>
-<div class='header'>Links</div>
-<div class='content'>
-    <ul class="entry">
-    
-        <li><a class="flat-box" target="_blank" href="https://bluecao.com/">
-            <div class='name'>Bluecao</div>
-        </a></li>
-    
-    </ul>
-</div>
-</section>
 
-  <section class='m_widget categories'>
-<div class='header'>Categories</div>
-<div class='content'>
-    
-</div>
-</section>
 
-  
-<div class="m_widget tagcloud">
-    <div class="header">Tags</div>
-    <div class='content'>
-        <a href="/tags/go/" style="font-size: 14px; color: #808080">go</a> <a href="/tags/linux/" style="font-size: 20px; color: #000">linux</a> <a href="/tags/mysql/" style="font-size: 14px; color: #808080">mysql</a> <a href="/tags/php/" style="font-size: 14px; color: #808080">php</a>
+
+
+
     </div>
-</div>
 
 
 
-      </aside>
-      <script>setLoadingBarProgress(60);</script>
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>主题Snippet v1.1.0版本即将上线，敬请期待~ <br>
+主题下载：<a href="https://github.com/shenliyang/hexo-theme-snippet"
+title="fork me" target="_blank">Snippet主题</a></p>
+        </div>
+    </div>
+
+        
+        
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+      
+        <a href="/tags/php/" style="font-size: 1em;">php</a> <a href="/tags/linux/" style="font-size: 1em;">linux</a> <a href="/tags/go/" style="font-size: 1em;">go</a> <a href="/tags/mysql/" style="font-size: 1em;">mysql</a>
     </div>
   </div>
-  <footer id="footer" class="clearfix">
 
-	<div class="social-wrapper">
-  	
-      
-        <a href="https://github.com/songqinghehe" class="social github"
-          target="_blank" rel="external">
-          <span class="icon icon-github"></span>
-        </a>
-      
-    
-  </div>
-  
-  <div>Theme <a href='https://github.com/stkevintan/hexo-theme-material-flow' class="codename">MaterialFlow</a> designed by <a href="http://keyin.me/" target="_blank">Kevin Tan</a>.</div>
-  
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">作者博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
 </footer>
 
 
-  <script>setLoadingBarProgress(80);</script>
-  
-
-<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src='//cdn.bootcss.com/node-waves/0.7.5/waves.min.js'></script>
-<script src="//cdn.bootcss.com/scrollReveal.js/3.3.2/scrollreveal.min.js"></script>
-<script src="/js/jquery.fitvids.js"></script>
-<script>
-	var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
-	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
-	var ALGOLIA_API_KEY = "";
-	var ALGOLIA_APP_ID = "";
-	var ALGOLIA_INDEX_NAME = "";
-  var AZURE_SERVICE_NAME = "";
-  var AZURE_INDEX_NAME = "";
-  var AZURE_QUERY_KEY = "";
-  var BAIDU_API_ID = "";
-  var SEARCH_SERVICE = "hexo";
-  var ROOT = "/"||"/";
-  if(!ROOT.endsWith('/'))ROOT += '/';
-</script>
-<script src="/js/search.js"></script>
-<script src="/js/app.js"></script>
 
 
-  <script>setLoadingBarProgress(100);</script>
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017 
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <script src="/assets/highlight.pack.js?rev=@@hash"></script>
+  <script>
+    hljs.initHighlightingOnLoad(); //初始化代码高亮 
+  </script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         tex2jax: {
