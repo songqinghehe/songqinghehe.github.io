@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://grooes.com/"/>
-  <updated>2017-09-20T12:35:42.246Z</updated>
+  <updated>2017-09-20T13:04:54.276Z</updated>
   <id>http://grooes.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PHP中的浅复制和深复制</title>
+    <link href="http://grooes.com/2017/09/20/PHP%E4%B8%AD%E7%9A%84%E6%B5%85%E5%A4%8D%E5%88%B6%E5%92%8C%E6%B7%B1%E5%A4%8D%E5%88%B6/"/>
+    <id>http://grooes.com/2017/09/20/PHP中的浅复制和深复制/</id>
+    <published>2017-09-20T13:03:31.000Z</published>
+    <updated>2017-09-20T13:04:54.276Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>深刻理解PHP中的浅复制和深复制</p></blockquote><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 深复制的原理是A的改变不会影响B的改变</span></div><div class="line"><span class="comment"> * 浅复制的原理是A的改变会影响B的改变</span></div><div class="line"><span class="comment">**/</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ObjA</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> $num = <span class="number">0</span>;</div><div class="line">    <span class="keyword">public</span> $objB; <span class="comment">//包含的对象</span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;objB = <span class="keyword">new</span> ObjB();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//只有实现了下面方法聚合类 才能实现深复制</span></div><div class="line">    <span class="comment">/*function __clone() &#123;</span></div><div class="line"><span class="comment">        $this-&gt;objB = clone $this-&gt;objB; </span></div><div class="line"><span class="comment">    &#125;*/</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ObjB</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">    <span class="keyword">public</span> $num2 = <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//原型对象</span></div><div class="line">$objA = <span class="keyword">new</span> ObjA();</div><div class="line"><span class="comment">//复制对象（=复制引用）</span></div><div class="line">$objA2 = $objA;</div><div class="line">$objA2-&gt;num = <span class="number">2</span>;</div><div class="line"><span class="comment">//随着$objA2-&gt;num的变化 $objA-&gt;num也变化了</span></div><div class="line">print_r($objA-&gt;num . <span class="string">'&lt;br/&gt;'</span>); <span class="comment">//结果为2</span></div><div class="line">print_r($objA2-&gt;num . <span class="string">'&lt;br/&gt;'</span>); <span class="comment">//结果为2</span></div><div class="line"></div><div class="line"><span class="comment">//复制对象（‘clone’关键字克隆）</span></div><div class="line">$objA3 = <span class="keyword">clone</span> $objA;</div><div class="line">$objA3-&gt;num = <span class="number">4</span>;</div><div class="line"><span class="comment">//随着$objA3-&gt;num的变化 $objA-&gt;num没有变化</span></div><div class="line">print_r($objA-&gt;num . <span class="string">'&lt;br/&gt;'</span>); <span class="comment">//结果为2</span></div><div class="line">print_r($objA3-&gt;num . <span class="string">'&lt;br/&gt;'</span>); <span class="comment">//结果为4</span></div><div class="line"><span class="comment">//但是clone的对象（是聚合类）中包含其他对象时所包含的对象（objB）复制的是引用</span></div><div class="line">$objA3-&gt;objB-&gt;num2 = <span class="number">7</span>;</div><div class="line">print_r($objA3-&gt;objB-&gt;num2 . <span class="string">'&lt;br/&gt;'</span>); <span class="comment">//结果是7</span></div><div class="line">print_r($objA-&gt;objB-&gt;num2 . <span class="string">'&lt;br/&gt;'</span>); <span class="comment">//结果是7</span></div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;深刻理解PHP中的浅复制和深复制&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div
+      
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://grooes.com/tags/php/"/>
+    
+  </entry>
   
   <entry>
     <title>实现一个base62_encode和base62_decode方法</title>
