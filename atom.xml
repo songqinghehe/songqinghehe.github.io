@@ -66,9 +66,9 @@
     </summary>
     
     
-      <category term="linux" scheme="http://grooes.com/tags/linux/"/>
-    
       <category term="mysql" scheme="http://grooes.com/tags/mysql/"/>
+    
+      <category term="linux" scheme="http://grooes.com/tags/linux/"/>
     
   </entry>
   
@@ -97,9 +97,9 @@
     </summary>
     
     
-      <category term="php" scheme="http://grooes.com/tags/php/"/>
-    
       <category term="linux" scheme="http://grooes.com/tags/linux/"/>
+    
+      <category term="php" scheme="http://grooes.com/tags/php/"/>
     
   </entry>
   
