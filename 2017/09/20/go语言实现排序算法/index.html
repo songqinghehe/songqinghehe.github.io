@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>go语言实现排序算法 | Grooes.com | The power of expression</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="go">
+    <meta name="description" content="Go实现相关排序算法 Go实现冒泡排序  1234567891011121314151617181920212223242526272829303132333435package mainimport &quot;fmt&quot;func main() &amp;#123;	var arr = []int&amp;#123;9,8,7,5,3,4,6,2,1,3,0&amp;#125;	bubbleAsort(arr)	bubbleZso">
+<meta name="keywords" content="go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go语言实现排序算法">
+<meta property="og:url" content="http://grooes.com/2017/09/20/go语言实现排序算法/index.html">
+<meta property="og:site_name" content="Grooes.com">
+<meta property="og:description" content="Go实现相关排序算法 Go实现冒泡排序  1234567891011121314151617181920212223242526272829303132333435package mainimport &quot;fmt&quot;func main() &amp;#123;	var arr = []int&amp;#123;9,8,7,5,3,4,6,2,1,3,0&amp;#125;	bubbleAsort(arr)	bubbleZso">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-20T12:03:09.177Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="go语言实现排序算法">
+<meta name="twitter:description" content="Go实现相关排序算法 Go实现冒泡排序  1234567891011121314151617181920212223242526272829303132333435package mainimport &quot;fmt&quot;func main() &amp;#123;	var arr = []int&amp;#123;9,8,7,5,3,4,6,2,1,3,0&amp;#125;	bubbleAsort(arr)	bubbleZso">
+    
+        <link rel="alternate" type="application/atom+xml" title="Grooes.com" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.jpg">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">qinghe Song</h5>
+          <a href="mailto:songqinghe.sqh@gmail.com" title="songqinghe.sqh@gmail.com" class="mail">songqinghe.sqh@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/songqinghehe" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/2136720231" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://twitter.com/qingheSong" target="_blank" >
+                <i class="icon icon-lg icon-twitter"></i>
+                Twitter
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.facebook.com/songqinghehe" target="_blank" >
+                <i class="icon icon-lg icon-facebook"></i>
+                Facebook
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.instagram.com/songsongqinghe/" target="_blank" >
+                <i class="icon icon-lg icon-instagram"></i>
+                Instagram
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.linkedin.com/in/qinghe-song-005457149/"  >
+                <i class="icon icon-lg icon-linkedin"></i>
+                Linkedin
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://plus.google.com/u/0/100850747330825034365" target="_blank" >
+                <i class="icon icon-lg icon-google"></i>
+                Google
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://bluecao.com/" target="_blank" >
+                <i class="icon icon-lg icon-bluecao"></i>
+                Bluecao
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">go语言实现排序算法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">go语言实现排序算法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-20T12:01:51.000Z" itemprop="datePublished" class="page-time">
+  2017-09-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Go实现相关排序算法"><span class="post-toc-number">1.</span> <span class="post-toc-text">Go实现相关排序算法</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-go语言实现排序算法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">go语言实现排序算法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-20 20:01:51" datetime="2017-09-20T12:01:51.000Z"  itemprop="datePublished">2017-09-20</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="Go实现相关排序算法"><a href="#Go实现相关排序算法" class="headerlink" title="Go实现相关排序算法"></a>Go实现相关排序算法</h3><blockquote>
+<p>Go实现冒泡排序</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> arr = []<span class="keyword">int</span>&#123;<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">0</span>&#125;</div><div class="line">	bubbleAsort(arr)</div><div class="line">	bubbleZsort(arr)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//倒序</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">bubbleAsort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	<span class="keyword">for</span> i :=<span class="number">0</span>; i &lt; <span class="built_in">len</span>(arr)<span class="number">-1</span>; i++ &#123;</div><div class="line">		<span class="keyword">for</span> j := i+<span class="number">1</span>; j&lt; <span class="built_in">len</span>(arr); j++ &#123;</div><div class="line">			<span class="keyword">if</span> (arr[i] &lt; arr[j]) &#123;</div><div class="line">				arr[i],arr[j] = arr[j],arr[i]</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	fmt.Println(arr)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//正序</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">bubbleZsort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	<span class="keyword">for</span> i :=<span class="number">0</span>; i &lt; <span class="built_in">len</span>(arr)<span class="number">-1</span>; i++ &#123;</div><div class="line">		<span class="keyword">for</span> j := i+<span class="number">1</span>; j&lt; <span class="built_in">len</span>(arr); j++ &#123;</div><div class="line">			<span class="keyword">if</span> (arr[i] &gt; arr[j]) &#123;</div><div class="line">				arr[i],arr[j] = arr[j],arr[i]</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	fmt.Println(arr)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Go实现选择排序</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> arr = []<span class="keyword">int</span>&#123;<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">0</span>&#125;</div><div class="line">	selectAsort(arr)</div><div class="line">	selectZsort(arr)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//倒序</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">selectAsort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	l := <span class="built_in">len</span>(arr)</div><div class="line">	m := <span class="built_in">len</span>(arr) - <span class="number">1</span></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; m; i++ &#123;</div><div class="line">		k := i</div><div class="line">		<span class="keyword">for</span> j := i+<span class="number">1</span>; j &lt; l; j++ &#123;</div><div class="line">			<span class="keyword">if</span> arr[k] &lt; arr[j] &#123;</div><div class="line">				k = j</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> k != i &#123;</div><div class="line">			arr[k],arr[i] = arr[i],arr[k]</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	fmt.Println(arr)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//正序</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">selectZsort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	l := <span class="built_in">len</span>(arr)</div><div class="line">	m := <span class="built_in">len</span>(arr) - <span class="number">1</span></div><div class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; m; i++ &#123;</div><div class="line">		k := i</div><div class="line">		<span class="keyword">for</span> j := i+<span class="number">1</span>; j &lt; l; j++ &#123;</div><div class="line">			<span class="keyword">if</span> arr[k] &gt; arr[j] &#123;</div><div class="line">				k = j</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> k != i &#123;</div><div class="line">			arr[k],arr[i] = arr[i],arr[k]</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	fmt.Println(arr)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Go实现快速排序</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> arr = []<span class="keyword">int</span>&#123;<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>&#125;</div><div class="line">	quickAsort(arr, <span class="number">0</span>, <span class="built_in">len</span>(arr)<span class="number">-1</span>)</div><div class="line">	fmt.Println(arr)</div><div class="line">	quickZsort(arr, <span class="number">0</span>, <span class="built_in">len</span>(arr)<span class="number">-1</span>)</div><div class="line">	fmt.Println(arr)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//倒序</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickAsort</span><span class="params">(arr []<span class="keyword">int</span>, start, end <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	<span class="keyword">if</span> (start &lt; end) &#123;</div><div class="line">		i, j := start, end</div><div class="line">		key := arr[(start + end)/<span class="number">2</span>]</div><div class="line">		<span class="keyword">for</span> i &lt;= j &#123;</div><div class="line">			<span class="keyword">for</span> arr[i] &gt; key &#123;</div><div class="line">				i++</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">for</span> arr[j] &lt; key &#123;</div><div class="line">				j--</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">if</span> i &lt;= j &#123;</div><div class="line">				arr[i], arr[j] = arr[j], arr[i]</div><div class="line">				i++</div><div class="line">				j--</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> start &lt; j &#123;</div><div class="line">			quickAsort(arr, start, j)</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> end &gt; i &#123;</div><div class="line">			quickAsort(arr, i, end)</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//正序</span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickZsort</span><span class="params">(arr []<span class="keyword">int</span>, start, end <span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	<span class="keyword">if</span> (start &lt; end) &#123;</div><div class="line">		i, j := start, end</div><div class="line">		key := arr[(start + end)/<span class="number">2</span>]</div><div class="line">		<span class="keyword">for</span> i &lt;= j &#123;</div><div class="line">			<span class="keyword">for</span> arr[i] &lt; key &#123;</div><div class="line">				i++</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">for</span> arr[j] &gt; key &#123;</div><div class="line">				j--</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">if</span> i &lt;= j &#123;</div><div class="line">				arr[i], arr[j] = arr[j], arr[i]</div><div class="line">				i++</div><div class="line">				j--</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> start &lt; j &#123;</div><div class="line">			quickZsort(arr, start, j)</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> end &gt; i &#123;</div><div class="line">			quickZsort(arr, i, end)</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Go实现插入排序</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> arr = []<span class="keyword">int</span>&#123;<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>&#125;</div><div class="line">	insertSort(arr)</div><div class="line">	fmt.Println(arr)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">insertSort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	n := <span class="built_in">len</span>(arr)</div><div class="line">	<span class="keyword">if</span> n &lt; <span class="number">2</span> &#123;</div><div class="line">		<span class="keyword">return</span></div><div class="line">	&#125;</div><div class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt; n; i++ &#123;</div><div class="line">		<span class="keyword">for</span> j := i; j &gt;<span class="number">0</span> &amp;&amp; arr[j] &lt; arr[j<span class="number">-1</span>]; j-- &#123;</div><div class="line">			arr[j], arr[j<span class="number">-1</span>] = arr[j<span class="number">-1</span>], arr[j]</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Go实现希尔排序</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">var</span> arr = []<span class="keyword">int</span>&#123;<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>&#125;</div><div class="line">	shellSort(arr)</div><div class="line">	fmt.Println(arr)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">shellSort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</div><div class="line">	n := <span class="built_in">len</span>(arr)</div><div class="line">	h := <span class="number">1</span></div><div class="line">	</div><div class="line">	<span class="comment">//寻找合适的间隔h</span></div><div class="line">	<span class="keyword">for</span> h &lt; n/<span class="number">3</span> &#123;</div><div class="line">		h = <span class="number">3</span>*h +<span class="number">1</span></div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">for</span> h &gt;= <span class="number">1</span> &#123;</div><div class="line">		<span class="keyword">for</span> i := h; i &lt; n; i++ &#123;</div><div class="line">			<span class="keyword">for</span> j := i; j &gt;= h &amp;&amp; arr[j] &lt; arr[j<span class="number">-1</span>]; j -= h &#123;</div><div class="line">				arr[j], arr[j<span class="number">-1</span>] = arr[j<span class="number">-1</span>], arr[j]</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		h /= <span class="number">3</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-09-20T12:03:09.177Z" itemprop="dateUpdated">2017-09-20 20:03:09</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/09/20/go语言实现排序算法/" target="_blank" rel="external">http://grooes.com/2017/09/20/go语言实现排序算法/</a>
+        
+    </div>
+    <footer>
+        <a href="http://grooes.com">
+            <img src="/img/avatar.jpg" alt="qinghe Song">
+            qinghe Song
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://grooes.com/2017/09/20/go语言实现排序算法/&title=《go语言实现排序算法》 — Grooes.com&pic=http://grooes.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://grooes.com/2017/09/20/go语言实现排序算法/&title=《go语言实现排序算法》 — Grooes.com&source=The power of expression" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://grooes.com/2017/09/20/go语言实现排序算法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《go语言实现排序算法》 — Grooes.com&url=http://grooes.com/2017/09/20/go语言实现排序算法/&via=http://grooes.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://grooes.com/2017/09/20/go语言实现排序算法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/17/Go语言中的-Array-Slice和-Map/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Go语言中的 Array, Slice和 Map</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.png" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.png" data-alipay="/img/alipay.png">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>qinghe Song &copy; 2015 - 2017</span>
+            <span>
+                
+                <a href="http://www.miitbeian.gov.cn/" target="_blank">冀ICP备17026930号</a><br>
+                
+	    </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://grooes.com/2017/09/20/go语言实现排序算法/&title=《go语言实现排序算法》 — Grooes.com&pic=http://grooes.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://grooes.com/2017/09/20/go语言实现排序算法/&title=《go语言实现排序算法》 — Grooes.com&source=The power of expression" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://grooes.com/2017/09/20/go语言实现排序算法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《go语言实现排序算法》 — Grooes.com&url=http://grooes.com/2017/09/20/go语言实现排序算法/&via=http://grooes.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://grooes.com/2017/09/20/go语言实现排序算法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://grooes.com/2017/09/20/go语言实现排序算法/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
