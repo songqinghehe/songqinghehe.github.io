@@ -20,19 +20,19 @@
     
     
     <meta name="keywords" content="redis">
-    <meta name="description" content="redis设计与实现之数据结构篇1、简单动态字符串(sds)                                                                                             This">
+    <meta name="description" content="redis设计与实现之数据结构篇1、简单动态字符串(sds)                                                                                             This              从数据结构看sds为buf分配了5个字符和0个free空间，\0是不计算在len内，但是会分配额外的1字节空间，下面讲">
 <meta name="keywords" content="redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis之数据结构篇">
 <meta property="og:url" content="http://grooes.com/2017/09/23/redis之数据结构篇/index.html">
 <meta property="og:site_name" content="Grooes.com">
-<meta property="og:description" content="redis设计与实现之数据结构篇1、简单动态字符串(sds)                                                                                             This">
+<meta property="og:description" content="redis设计与实现之数据结构篇1、简单动态字符串(sds)                                                                                             This              从数据结构看sds为buf分配了5个字符和0个free空间，\0是不计算在len内，但是会分配额外的1字节空间，下面讲">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/1.png">
-<meta property="og:updated_time" content="2017-09-23T09:21:25.880Z">
+<meta property="og:updated_time" content="2017-09-23T09:43:01.254Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis之数据结构篇">
-<meta name="twitter:description" content="redis设计与实现之数据结构篇1、简单动态字符串(sds)                                                                                             This">
+<meta name="twitter:description" content="redis设计与实现之数据结构篇1、简单动态字符串(sds)                                                                                             This              从数据结构看sds为buf分配了5个字符和0个free空间，\0是不计算在len内，但是会分配额外的1字节空间，下面讲">
 <meta name="twitter:image" content="https://github.com/songqinghehe/MyImage/raw/master/1.png">
     
         <link rel="alternate" type="application/atom+xml" title="Grooes.com" href="/atom.xml">
@@ -224,6 +224,18 @@
                 </div>
                 <div class="image-caption">This</div>
             </figure>
+<p>从数据结构看sds为buf分配了5个字符和0个free空间，\0是不计算在len内，但是会分配额外的1字节空间，下面讲讲这样设计的好处</p>
+<ul>
+<li>数据结构中存了len字段，可以O(1)常数时间获取字符串长度</li>
+<li>每次插入元素前都会检查sds空间是否足够，若不满足做适当的扩充，可以避免缓冲区溢出的可能性(C语言中每次插入或者删除字符的时候都要重新分配新的内存来保存新值，是一个很耗时的操作 )</li>
+<li><p>sds采用空间预分配和惰性空间释放两种策略减少了内存重分配的次数，看到free字段就知道这是一个额外的空间来在某种程度上减少了重分配的次数，具体如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1、如现有空间足够存放修改后内容，则不进行扩展，直接插入。</div><div class="line">2、如现有空间不足以存放修改后内容，且修改后sds的len小于1M，则扩展后len=free，比如修改后空间为15 byte，则分配的空间是31：15+15+1byte.</div><div class="line">3、如现有空间不足以存放修改后内容，且修改后sds的len大于1M，则分配1M的使用空间，则新的空间为20M+1M+1byte</div></pre></td></tr></table></figure>
+</li>
+<li><p>惰性空间释放:用于优化SDS缩减操作.当api对sds进行缩短操作后,程序不会释放缩短后空余出的空间,而是使用free属性把他们记录下来,当我们插入的时候就可以减少内存重分配了(不需要担心，我们以后不添加内容时，造成的内存泄露，因为sds提供了释放空间的API)</p>
+</li>
+<li>二进制安全，不像C语言，C字符串的字符必须某种编码(比如ASCII),并且除末尾外,其余地方不能出现空字符串\0,否则会被提前结束,(\0是c字符串的结束标识符),比如acvf\0sdsdsd\0,只能识别到acvf，而sds是根据len属性来判断字符串的结束，所以不存在是否有\0</li>
+<li>由于SDS的buf数组以\0结尾,符合c字符串特征,因此,它可以使用C字符串的一些api</li>
+</ul>
 
         </div>
 
@@ -231,7 +243,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-09-23T09:21:25.880Z" itemprop="dateUpdated">2017-09-23 17:21:25</time>
+    最后更新时间：<time datetime="2017-09-23T09:43:01.254Z" itemprop="dateUpdated">2017-09-23 17:43:01</time>
 </span><br>
 
 
@@ -512,5 +524,20 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
