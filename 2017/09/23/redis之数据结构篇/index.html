@@ -31,7 +31,11 @@
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/1.png">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/2.png">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/3.png">
-<meta property="og:updated_time" content="2017-09-23T10:40:23.136Z">
+<meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/4.png">
+<meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/5.png">
+<meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/6.png">
+<meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/7.png">
+<meta property="og:updated_time" content="2017-09-23T11:57:34.824Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis之数据结构篇">
 <meta name="twitter:description" content="redis设计与实现之数据结构篇简单动态字符串(sds)                                                                                             Grooes              从数据结构看sds为buf分配了5个字符和0个free空间，\0是不计算在len内，但是会分配额外的1字节空间，下面讲">
@@ -196,7 +200,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#redis设计与实现之数据结构篇"><span class="post-toc-number">1.</span> <span class="post-toc-text">redis设计与实现之数据结构篇</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简单动态字符串-sds"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">简单动态字符串(sds)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#链表"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">链表</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#redis设计与实现之数据结构篇"><span class="post-toc-number">1.</span> <span class="post-toc-text">redis设计与实现之数据结构篇</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简单动态字符串-sds"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">简单动态字符串(sds)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#链表"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">链表</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#字典"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">字典</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#哈希表实现"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">哈希表实现</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#字典-1"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">字典</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#哈希算法"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">哈希算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#解决键冲突"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">解决键冲突</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#rehash"><span class="post-toc-number">1.3.5.</span> <span class="post-toc-text">rehash</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#渐进式rehash"><span class="post-toc-number">1.3.6.</span> <span class="post-toc-text">渐进式rehash</span></a></li></ol></li></ol></li></ol>
         </nav>
     </aside>
     
@@ -261,6 +265,52 @@
 <li>带链表长度计数器： 程序使用 list 结构的 len 属性来对 list 持有的链表节点进行计数， 程序获取链表中节点数量的复杂度为 O(1) </li>
 <li>多态： 链表节点使用 void* 指针来保存节点值， 并且可以通过 list 结构的 dup 、 free 、 match 三个属性为节点值设置类型特定函数， 所以链表可以用于保存各种不同类型的值</li>
 </ul>
+<h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><p>字典又称为符号表、关联数组、映射，是一种用于保存键值对的抽象数据结构，下面看某结构实现</p>
+<h4 id="哈希表实现"><a href="#哈希表实现" class="headerlink" title="哈希表实现"></a>哈希表实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">typedef struct dictht &#123;</div><div class="line">    dictEntry **table;//哈希表数组</div><div class="line">    unsigned long size;//哈希表大小</div><div class="line">    unsigned long sizemask;//哈希表大小掩码，用于计算索引值，总是等于 size - 1</div><div class="line">	unsigned long used;//该哈希表已有节点的数量</div><div class="line">&#125; dictht;</div><div class="line"></div><div class="line">typedef struct dictEntry &#123;</div><div class="line">    void *key;//键</div><div class="line">    union &#123;</div><div class="line">        void *val;</div><div class="line">        uint64_t u64;</div><div class="line">        int64_t s64;</div><div class="line">    &#125; v;//值</div><div class="line">    struct dictEntry *next;//指向下个哈希表节点，形成链表</div><div class="line">&#125; dictEntry;</div></pre></td></tr></table></figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/songqinghehe/MyImage/raw/master/4.png" alt="Grooes" title="">
+                </div>
+                <div class="image-caption">Grooes</div>
+            </figure>
+<h4 id="字典-1"><a href="#字典-1" class="headerlink" title="字典"></a>字典</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">typedef struct dict &#123;</div><div class="line">    dictType *type;// 类型特定函数，指向 dictType 结构的指针，每个dictType结构保存了一簇用于操作特定类型键值对的函数，Redis 会为用途不同的字典设置不同的类型特定函数。</div><div class="line">    void *privdata;//私有数据，保存了需要传给那些类型特定函数的可选参数</div><div class="line">    dictht ht[2];//哈希表，是一个包含两个项的数组，数组中的每个项都是一个dictht哈希表， 一般情况下， 字典只使用ht[0]哈希表， ht[1]哈希表只会在对ht[0]哈希表进行rehash时使用</div><div class="line">    int rehashidx; //rehash索引，当rehash不在进行时，值为-1</div><div class="line">&#125; dict;</div><div class="line"></div><div class="line">typedef struct dictType &#123;</div><div class="line">    unsigned int (*hashFunction)(const void *key);//计算哈希值的函数</div><div class="line">    void *(*keyDup)(void *privdata, const void *key);//复制键的函数</div><div class="line">    void *(*valDup)(void *privdata, const void *obj);//复制值的函数</div><div class="line">    int (*keyCompare)(void *privdata, const void *key1, const void *key2);//对比键的函数</div><div class="line">    void (*keyDestructor)(void *privdata, void *key);//销毁键的函数</div><div class="line">    void (*valDestructor)(void *privdata, void *obj);//销毁值的函数</div><div class="line">&#125; dictType;</div></pre></td></tr></table></figure>
+<p>下图展示一个没有进行rehash的字典<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/songqinghehe/MyImage/raw/master/5.png" alt="Grooes" title="">
+                </div>
+                <div class="image-caption">Grooes</div>
+            </figure></p>
+<h4 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h4><p>当要将一个新的键值对添加到字典里面时， 程序需要先根据键值对的键计算出哈希值和索引值， 然后再根据索引值， 将包含新键值对的哈希表节点放到哈希表数组的指定索引上面，Redis 计算哈希值和索引值的方法如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//使用字典设置的哈希函数，计算键 key 的哈希值</div><div class="line">hash = dict-&gt;type-&gt;hashFunction(key);</div><div class="line"></div><div class="line">//使用哈希表的 sizemask 属性和哈希值，计算出索引值，根据情况不同，ht[x] 可以是 ht[0] 或者 ht[1]</div><div class="line">index = hash &amp; dict-&gt;ht[x].sizemask;</div></pre></td></tr></table></figure></p>
+<p>下面是一个空字典的结构图<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/songqinghehe/MyImage/raw/master/6.png" alt="Grooes" title="">
+                </div>
+                <div class="image-caption">Grooes</div>
+            </figure><br>如上图，如果我们要将一个键值对 k0 和 v0 添加到字典里面， 那么程序会先使用语句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hash = dict-&gt;type-&gt;hashFunction(k0);//计算键 k0 的哈希值，假设计算得出的哈希值为8</div><div class="line">index = hash &amp; dict-&gt;ht[0].sizemask = 8 &amp; 3 = 0;//计算出键k0的索引值0，这表示包含键值对k0和v0的节点应该被放置到哈希表数组的索引0位置上</div></pre></td></tr></table></figure></p>
+<h4 id="解决键冲突"><a href="#解决键冲突" class="headerlink" title="解决键冲突"></a>解决键冲突</h4><p>当有两个或以上数量的键被分配到了哈希表数组的同一个索引上面时， 我们称这些键发生了冲突（collision），Redis 的哈希表使用链地址法（separate chaining）来解决键冲突： 每个哈希表节点都有一个 next 指针， 多个哈希表节点可以用 next 指针构成一个单向链表， 被分配到同一个索引上的多个节点可以用这个单向链表连接起来， 这就解决了键冲突的问题，如图<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/songqinghehe/MyImage/raw/master/7.png" alt="Grooes" title="">
+                </div>
+                <div class="image-caption">Grooes</div>
+            </figure><br>k1和k2键冲突的话，直接用单向链表连接起来，并且最新添加的放在表头（原因：dictEntry 节点组成的链表没有指向链表表尾的指针， 所以为了速度考虑， 程序总是将新节点添加到链表的表头位置（复杂度为 O(1)）， 排在其他已有节点的前面）</p>
+<h4 id="rehash"><a href="#rehash" class="headerlink" title="rehash"></a>rehash</h4><p>随着操作的不断执行， 哈希表保存的键值对会逐渐地增多或者减少， 为了让哈希表的负载因子（load factor）维持在一个合理的范围之内， 当哈希表保存的键值对数量太多或者太少时， 程序需要对哈希表的大小进行相应的扩展或者收缩， Redis 对字典的哈希表执行 rehash 的步骤如下</p>
+<ul>
+<li><p>为字典的 ht[1] 哈希表分配空间， 这个哈希表的空间大小取决于要执行的操作， 以及 ht[0] 当前包含的键值对数量 （也即是 ht[0].used 属性的值）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">如果执行的是扩展操作， 那么 ht[1] 的大小为第一个大于等于 ht[0].used * 2 的 2^n （2 的 n 次方幂）</div><div class="line">如果执行的是收缩操作， 那么 ht[1] 的大小为第一个大于等于 ht[0].used 的 2^n</div></pre></td></tr></table></figure>
+</li>
+<li><p>将保存在 ht[0] 中的所有键值对 rehash 到 ht[1] 上面： rehash 指的是重新计算键的哈希值和索引值， 然后将键值对放置到 ht[1] 哈希表的指定位置上</p>
+</li>
+<li>当 ht[0] 包含的所有键值对都迁移到了 ht[1] 之后 （ht[0] 变为空表）， 释放 ht[0] ， 将 ht[1] 设置为 ht[0] ， 并在 ht[1] 新创建一个空白哈希表， 为下一次 rehash 做准备</li>
+<li>哈希表的扩展与收缩，当以下条件中的任意一个被满足时， 程序会自动开始对哈希表执行扩展操作<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">服务器目前没有在执行 BGSAVE 命令或者 BGREWRITEAOF 命令， 并且哈希表的负载因子大于等于 1</div><div class="line">服务器目前正在执行 BGSAVE 命令或者 BGREWRITEAOF 命令， 并且哈希表的负载因子大于等于 5</div><div class="line">当哈希表的负载因子小于 0.1 时， 程序自动开始对哈希表执行收缩操作</div><div class="line">load_factor = ht[0].used / ht[0].size;//负载因子 = 哈希表已保存节点数量 / 哈希表大小</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>根据 BGSAVE 命令或 BGREWRITEAOF 命令是否正在执行， 服务器执行扩展操作所需的负载因子并不相同， 这是因为在执行 BGSAVE 命令或 BGREWRITEAOF 命令的过程中， Redis 需要创建当前服务器进程的子进程， 而大多数操作系统都采用写时复制（copy-on-write）技术来优化子进程的使用效率， 所以在子进程存在期间， 服务器会提高执行扩展操作所需的负载因子， 从而尽可能地避免在子进程存在期间进行哈希表扩展操作， 这可以避免不必要的内存写入操作， 最大限度地节约内存</p>
+<h4 id="渐进式rehash"><a href="#渐进式rehash" class="headerlink" title="渐进式rehash"></a>渐进式rehash</h4><p>rehash 动作并不是一次性、集中式地完成的， 而是分多次、渐进式地完成的，原因在于， 如果 ht[0] 里只保存着四个键值对， 那么服务器可以在瞬间就将这些键值对全部 rehash 到 ht[1] ； 但是， 如果哈希表里保存的键值对数量不是四个， 而是四百万、四千万甚至四亿个键值对， 那么要一次性将这些键值对全部 rehash 到 ht[1] 的话， 庞大的计算量可能会导致服务器在一段时间内停止服务，所以哈希表渐进式 rehash 的详细步骤<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">为 ht[1] 分配空间， 让字典同时持有 ht[0] 和 ht[1] 两个哈希表</div><div class="line">在字典中维持一个索引计数器变量 rehashidx ， 并将它的值设置为 0 ， 表示 rehash 工作正式开始</div><div class="line">在 rehash 进行期间， 每次对字典执行添加、删除、查找或者更新操作时， 程序除了执行指定的操作以外， 还会顺带将 ht[0] 哈希表在 rehashidx 索引上的所有键值对 rehash 到 ht[1] ， 当 rehash 工作完成之后， 程序将 rehashidx 属性的值增一</div><div class="line">随着字典操作的不断执行， 最终在某个时间点上， ht[0] 的所有键值对都会被 rehash 至 ht[1] ， 这时程序将 rehashidx 属性的值设为 -1 ， 表示 rehash 操作已完成</div></pre></td></tr></table></figure></p>
+<p>渐进式 rehash 的好处在于它采取分而治之的方式， 将 rehash 键值对所需的计算工作均滩到对字典的每个添加、删除、查找和更新操作上， 从而避免了集中式 rehash 而带来的庞大计算量<br>因为在进行渐进式 rehash 的过程中， 字典会同时使用 ht[0] 和 ht[1] 两个哈希表， 所以在渐进式 rehash 进行期间， 字典的删除（delete）、查找（find）、更新（update）等操作会在两个哈希表上进行： 比如说， 要在字典里面查找一个键的话， 程序会先在 ht[0] 里面进行查找， 如果没找到的话， 就会继续到 ht[1] 里面进行查找，另外， 在渐进式 rehash 执行期间， 新添加到字典的键值对一律会被保存到 ht[1] 里面， 而 ht[0] 则不再进行任何添加操作： 这一措施保证了 ht[0] 包含的键值对数量会只减不增， 并随着 rehash 操作的执行而最终变成空表</p>
 
         </div>
 
@@ -268,7 +318,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-09-23T10:40:23.136Z" itemprop="dateUpdated">2017-09-23 18:40:23</time>
+    最后更新时间：<time datetime="2017-09-23T11:57:34.824Z" itemprop="dateUpdated">2017-09-23 19:57:34</time>
 </span><br>
 
 
