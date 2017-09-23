@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/8.png">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/9.png">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/10.png">
-<meta property="og:updated_time" content="2017-09-23T13:19:57.619Z">
+<meta property="og:updated_time" content="2017-09-23T13:20:46.423Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis之数据结构篇">
 <meta name="twitter:description" content="redis设计与实现之数据结构篇简单动态字符串(sds)                                                                                                           从数据结构看sds为buf分配了5个字符和0个free空间，\0是不计算在len内，但是会分配额外的1字节空间，下面讲讲这样设计的">
@@ -357,8 +357,9 @@
 <p>升级之后新元素的摆放位置，因为引发升级的新元素的长度总是比整数集合现有的所有元素的长度都大，所以这个新元素的值要么就大于所有现有元素，要么就小于所有现有元素</p>
 <ul>
 <li>在新元素小于所有现有元素的情况下，新元素会被放置在底层数组的最开头(index=0)</li>
-<li>在新元素大于所有现有元素的情况下，新元素会被放置在底层数组的最末尾(index=length-1)<h4 id="降级"><a href="#降级" class="headerlink" title="降级"></a>降级</h4>整数集合不支持降级操作， 一旦对数组进行了升级， 编码就会一直保持升级后的状态</li>
+<li>在新元素大于所有现有元素的情况下，新元素会被放置在底层数组的最末尾(index=length-1)</li>
 </ul>
+<h4 id="降级"><a href="#降级" class="headerlink" title="降级"></a>降级</h4><p>整数集合不支持降级操作， 一旦对数组进行了升级， 编码就会一直保持升级后的状态</p>
 <h3 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h3><p>压缩列表(ziplist)是列表键和哈希键的底层实现之一，当一个列表键只包含少量的列表项，并且每个列表项要么就是小整数值，要么就是长度比较短的字符串，redis就会使用压缩列表来做列表键的底层实现</p>
 <h4 id="压缩列表的构成"><a href="#压缩列表的构成" class="headerlink" title="压缩列表的构成"></a>压缩列表的构成</h4><p>压缩列表是 Redis 为了节约内存而开发的， 由一系列特殊编码的连续内存块组成的顺序型（sequential）数据结构<br>结构如下图<br><figure class="image-bubble">
                 <div class="img-lightbox">
@@ -405,7 +406,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-09-23T13:19:57.619Z" itemprop="dateUpdated">2017-09-23 21:19:57</time>
+    最后更新时间：<time datetime="2017-09-23T13:20:46.423Z" itemprop="dateUpdated">2017-09-23 21:20:46</time>
 </span><br>
 
 
