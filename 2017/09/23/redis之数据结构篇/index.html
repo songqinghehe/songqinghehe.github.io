@@ -35,7 +35,8 @@
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/5.png">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/6.png">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/7.png">
-<meta property="og:updated_time" content="2017-09-23T11:57:34.824Z">
+<meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/8.png">
+<meta property="og:updated_time" content="2017-09-23T12:31:59.458Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis之数据结构篇">
 <meta name="twitter:description" content="redis设计与实现之数据结构篇简单动态字符串(sds)                                                                                             Grooes              从数据结构看sds为buf分配了5个字符和0个free空间，\0是不计算在len内，但是会分配额外的1字节空间，下面讲">
@@ -200,7 +201,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#redis设计与实现之数据结构篇"><span class="post-toc-number">1.</span> <span class="post-toc-text">redis设计与实现之数据结构篇</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简单动态字符串-sds"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">简单动态字符串(sds)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#链表"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">链表</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#字典"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">字典</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#哈希表实现"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">哈希表实现</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#字典-1"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">字典</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#哈希算法"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">哈希算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#解决键冲突"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">解决键冲突</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#rehash"><span class="post-toc-number">1.3.5.</span> <span class="post-toc-text">rehash</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#渐进式rehash"><span class="post-toc-number">1.3.6.</span> <span class="post-toc-text">渐进式rehash</span></a></li></ol></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#redis设计与实现之数据结构篇"><span class="post-toc-number">1.</span> <span class="post-toc-text">redis设计与实现之数据结构篇</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简单动态字符串-sds"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">简单动态字符串(sds)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#链表"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">链表</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#字典"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">字典</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#哈希表实现"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">哈希表实现</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#字典-1"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">字典</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#哈希算法"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">哈希算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#解决键冲突"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">解决键冲突</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#rehash"><span class="post-toc-number">1.3.5.</span> <span class="post-toc-text">rehash</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#渐进式rehash"><span class="post-toc-number">1.3.6.</span> <span class="post-toc-text">渐进式rehash</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#跳跃表"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">跳跃表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#跳跃表的实现"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">跳跃表的实现</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#跳跃表节点"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">跳跃表节点</span></a></li></ol></li></ol></li></ol>
         </nav>
     </aside>
     
@@ -311,6 +312,32 @@
 <p>根据 BGSAVE 命令或 BGREWRITEAOF 命令是否正在执行， 服务器执行扩展操作所需的负载因子并不相同， 这是因为在执行 BGSAVE 命令或 BGREWRITEAOF 命令的过程中， Redis 需要创建当前服务器进程的子进程， 而大多数操作系统都采用写时复制（copy-on-write）技术来优化子进程的使用效率， 所以在子进程存在期间， 服务器会提高执行扩展操作所需的负载因子， 从而尽可能地避免在子进程存在期间进行哈希表扩展操作， 这可以避免不必要的内存写入操作， 最大限度地节约内存</p>
 <h4 id="渐进式rehash"><a href="#渐进式rehash" class="headerlink" title="渐进式rehash"></a>渐进式rehash</h4><p>rehash 动作并不是一次性、集中式地完成的， 而是分多次、渐进式地完成的，原因在于， 如果 ht[0] 里只保存着四个键值对， 那么服务器可以在瞬间就将这些键值对全部 rehash 到 ht[1] ； 但是， 如果哈希表里保存的键值对数量不是四个， 而是四百万、四千万甚至四亿个键值对， 那么要一次性将这些键值对全部 rehash 到 ht[1] 的话， 庞大的计算量可能会导致服务器在一段时间内停止服务，所以哈希表渐进式 rehash 的详细步骤<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">为 ht[1] 分配空间， 让字典同时持有 ht[0] 和 ht[1] 两个哈希表</div><div class="line">在字典中维持一个索引计数器变量 rehashidx ， 并将它的值设置为 0 ， 表示 rehash 工作正式开始</div><div class="line">在 rehash 进行期间， 每次对字典执行添加、删除、查找或者更新操作时， 程序除了执行指定的操作以外， 还会顺带将 ht[0] 哈希表在 rehashidx 索引上的所有键值对 rehash 到 ht[1] ， 当 rehash 工作完成之后， 程序将 rehashidx 属性的值增一</div><div class="line">随着字典操作的不断执行， 最终在某个时间点上， ht[0] 的所有键值对都会被 rehash 至 ht[1] ， 这时程序将 rehashidx 属性的值设为 -1 ， 表示 rehash 操作已完成</div></pre></td></tr></table></figure></p>
 <p>渐进式 rehash 的好处在于它采取分而治之的方式， 将 rehash 键值对所需的计算工作均滩到对字典的每个添加、删除、查找和更新操作上， 从而避免了集中式 rehash 而带来的庞大计算量<br>因为在进行渐进式 rehash 的过程中， 字典会同时使用 ht[0] 和 ht[1] 两个哈希表， 所以在渐进式 rehash 进行期间， 字典的删除（delete）、查找（find）、更新（update）等操作会在两个哈希表上进行： 比如说， 要在字典里面查找一个键的话， 程序会先在 ht[0] 里面进行查找， 如果没找到的话， 就会继续到 ht[1] 里面进行查找，另外， 在渐进式 rehash 执行期间， 新添加到字典的键值对一律会被保存到 ht[1] 里面， 而 ht[0] 则不再进行任何添加操作： 这一措施保证了 ht[0] 包含的键值对数量会只减不增， 并随着 rehash 操作的执行而最终变成空表</p>
+<h3 id="跳跃表"><a href="#跳跃表" class="headerlink" title="跳跃表"></a>跳跃表</h3><p>跳跃表是一种有序数据结构，通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的，支持O(logN)，最坏O(N)复杂度的节点查找，还可以通过顺序性操作来批量处理节点，另外可以和<a href="https://zhuanlan.zhihu.com/p/21428112" target="_blank" rel="external">平衡树</a>相媲美，且实现起来更简单，redis中只有 实现有序集合键、集群节点用作内部数据结构 来个地方，再没有其他用途</p>
+<h4 id="跳跃表的实现"><a href="#跳跃表的实现" class="headerlink" title="跳跃表的实现"></a>跳跃表的实现</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/songqinghehe/MyImage/raw/master/8.png" alt="Grooes" title="">
+                </div>
+                <div class="image-caption">Grooes</div>
+            </figure>
+<p>位于图最左为zskiplist结构</p>
+<ul>
+<li>header ：指向跳跃表的表头节点</li>
+<li>tail ：指向跳跃表的表尾节点</li>
+<li>level ：记录目前跳跃表内，层数最大的那个节点的层数（表头节点的层数不计算在内）</li>
+<li>length ：记录跳跃表的长度，也即是，跳跃表目前包含节点的数量（表头节点不计算在内）<br>位于 zskiplist 结构右方的是四个 zskiplistNode 结构， 该结构包含以下属性</li>
+<li>层（level）：节点中用 L1 、 L2 、 L3 等字样标记节点的各个层， L1 代表第一层， L2 代表第二层，以此类推。每个层都带有两个属性：前进指针和跨度。前进指针用于访问位于表尾方向的其他节点，而跨度则记录了前进指针所指向节点和当前节点的距离。在上面的图片中，连线上带有数字的箭头就代表前进指针，而那个数字就是跨度。当程序从表头向表尾进行遍历时，访问会沿着层的前进指针进行</li>
+<li>后退（backward）指针：节点中用 BW 字样标记节点的后退指针，它指向位于当前节点的前一个节点。后退指针在程序从表尾向表头遍历时使用</li>
+<li>分值（score）：各个节点中的 1.0 、 2.0 和 3.0 是节点所保存的分值。在跳跃表中，节点按各自所保存的分值从小到大排列</li>
+<li>成员对象（obj）：各个节点中的 o1 、 o2 和 o3 是节点所保存的成员对象<h4 id="跳跃表节点"><a href="#跳跃表节点" class="headerlink" title="跳跃表节点"></a>跳跃表节点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">typedef struct zskiplistNode &#123;</div><div class="line">    struct zskiplistNode *backward;//后退指针</div><div class="line">    double score;//分值</div><div class="line">    robj *obj;//成员对象</div><div class="line">    struct zskiplistLevel &#123;</div><div class="line">        struct zskiplistNode *forward;//前进指针</div><div class="line">        unsigned int span;//跨度</div><div class="line">    &#125; level[];//层</div><div class="line">&#125; zskiplistNode;</div><div class="line"></div><div class="line">typedef struct zskiplist &#123;</div><div class="line">    struct zskiplistNode *header, *tail;//表头节点和表尾节点，header 和 tail 指针分别指向跳跃表的表头和表尾节点， 通过这两个指针， 程序定位表头节点和表尾节点的复杂度为 O(1) </div><div class="line">    </div><div class="line">    unsigned long length;//表中节点的数量，通过使用 length 属性来记录节点的数量， 程序可以在 O(1) 复杂度内返回跳跃表的长度</div><div class="line">    </div><div class="line">    int level;//表中层数最大的节点的层数，level 属性则用于在 O(1) 复杂度内获取跳跃表中层高最大的那个节点的层数量， 注意表头节点的层高并不计算在内</div><div class="line">&#125; zskiplist;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>跳跃表节点的 level 数组可以包含多个元素， 每个元素都包含一个指向其他节点的指针， 程序可以通过这些层来加快访问其他节点的速度， 一般来说， 层的数量越多， 访问其他节点的速度就越快<br>每次创建一个新跳跃表节点的时候， 程序都根据幂次定律 （power law，越大的数出现的概率越小） 随机生成一个介于 1 和 32 之间的值作为 level 数组的大小， 这个大小就是层的“高度”<br>每个层都有一个指向表尾方向的前进指针（level[i].forward 属性）， 用于从表头向表尾方向访问节点<br>层的跨度（level[i].span 属性）用于记录两个节点之间的距离</p>
+<ul>
+<li>两个节点之间的跨度越大， 它们相距得就越远</li>
+<li>指向 NULL 的所有前进指针的跨度都为 0 ， 因为它们没有连向任何节点</li>
+</ul>
+<p>节点的后退指针（backward 属性）用于从表尾向表头方向访问节点： 跟可以一次跳过多个节点的前进指针不同， 因为每个节点只有一个后退指针， 所以每次只能后退至前一个节点<br>节点的分值（score 属性）是一个 double 类型的浮点数， 跳跃表中的所有节点都按分值从小到大来排序<br>节点的成员对象（obj 属性）是一个指针， 它指向一个字符串对象， 而字符串对象则保存着一个 SDS 值<br><a href="https://www.zhihu.com/question/20202931" target="_blank" rel="external">为啥 redis 使用跳表(skiplist)而不是使用 red-black？</a></p>
 
         </div>
 
@@ -318,7 +345,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-09-23T11:57:34.824Z" itemprop="dateUpdated">2017-09-23 19:57:34</time>
+    最后更新时间：<time datetime="2017-09-23T12:31:59.458Z" itemprop="dateUpdated">2017-09-23 20:31:59</time>
 </span><br>
 
 
