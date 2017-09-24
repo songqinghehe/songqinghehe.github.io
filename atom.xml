@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://grooes.com/"/>
-  <updated>2017-09-23T13:27:12.855Z</updated>
+  <updated>2017-09-24T02:29:47.368Z</updated>
   <id>http://grooes.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>redis之二进制位数组篇</title>
+    <link href="http://grooes.com/2017/09/24/redis%E4%B9%8B%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D%E6%95%B0%E7%BB%84%E7%AF%87/"/>
+    <id>http://grooes.com/2017/09/24/redis之二进制位数组篇/</id>
+    <published>2017-09-24T01:41:27.000Z</published>
+    <updated>2017-09-24T02:29:47.368Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="redis设计与实现之二进制位数组篇"><a href="#redis设计与实现之二进制位数组篇" class="headerlink" title="redis设计与实现之二进制位数组篇"></a>redis设计与实现之二进制位数组篇</h2><p>redis提供了setbit、getbit、bitcount、bitop四个命令用于处理二进制位数组</p><blockquote><p>setbit命令用于为位数组指定偏移量上的二进制设置值，只能赋值0或者1<br>getbit命令用于获取位数组指定偏移量上的二进制位的值<br>bitcount命令用于统计位数组里面，值为1的二进制位的数量<br>bitop命令既可以对多个数组进行按位与（and）按位或（or）按位异或（xor）</p></blockquote><h3 id="位数组的表示"><a href="#位数组的表示" class="headerlink" title="位数组的表示"></a>位数组的表示</h3><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://github.com/songqinghehe/MyImage/raw/master/11.png" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>注释：buf数组采用逆序来保存位数组</p><h3 id="位数组命令的实现"><a href="#位数组命令的实现" class="headerlink" title="位数组命令的实现"></a>位数组命令的实现</h3><h4 id="getbit命令实现"><a href="#getbit命令实现" class="headerlink" title="getbit命令实现"></a>getbit命令实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">GETBIT &lt;bitarray&gt; &lt;offset&gt;</div><div class="line"></div><div class="line">计算 byte = [offset / 8] ， byte 值记录了 offset 偏移量指定的二进制位保存在位数组的哪个字节</div><div class="line">计算 bit = (offset mod 8) + 1 ， bit 值记录了 offset 偏移量指定的二进制位是 byte 字节的第几个二进制位</div><div class="line">根据 byte 值和 bit 值， 在位数组 bitarray 中定位 offset 偏移量指定的二进制位， 并返回这个位的值(返回的是原来的值，切记)</div><div class="line"></div><div class="line">case如下</div><div class="line">GETBIT &lt;bitarray&gt; 3</div><div class="line">[3 / 8] 的值为 0</div><div class="line">(3 mod 8) + 1 的值为 4 </div><div class="line">定位到 buf[0] 字节上面， 然后取出该字节上的第 4 个二进制位（从左向右数）的值</div><div class="line">向客户端返回二进制位的值 (如果是1返回1，如果是0返回0)</div><div class="line"></div><div class="line">注释：时间复杂度位O(1)</div></pre></td></tr></table></figure><h4 id="setbit命令实现"><a href="#setbit命令实现" class="headerlink" title="setbit命令实现"></a>setbit命令实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">SETBIT &lt;bitarray&gt; &lt;offset&gt; &lt;value&gt;</div><div class="line"></div><div class="line">计算len=[offset / 8]+1，len值记录了保存offset偏移量指定的二进制位至少需要多少字节</div><div class="line">检查bitarray键保存的位数组（sds）的长度是否小于len，如果是则将sds的长度扩展为len字节，并将所有新扩展空间的二进制位的值设为0</div><div class="line">计算byte=[offset / 8]，byte值记录了offset偏移量指定的二进制位保存在位数组的哪个字节</div><div class="line">计算bit=(offset mod 8)+1，bit值记录了offset偏移量指定的二进制位是byte字节的第几个二进制位</div><div class="line">根据byte值和bit值，在bitarray键保存的位数组中定位offset偏移量指定的二进制位，首先将制定二进制位现在值保存在oldvalue变量，然后将新值value设置为这个二进制位的值</div><div class="line">向客户端返回oldvalue变量的值</div><div class="line"></div><div class="line">注释：时间复杂度位O(1)</div></pre></td></tr></table></figure><h4 id="bitcount命令实现"><a href="#bitcount命令实现" class="headerlink" title="bitcount命令实现"></a>bitcount命令实现</h4><p>bitcount命令的实现用到了查表和variable-precisionSWAR两种算法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">查表算法使用键长位8位的表，表中记录了从0000 0000到1111 1111 在内的所有二进制位的汉明重量</div><div class="line">至于variable-precisionSWAR算法方面，bitcount命令在每次循环中载入128个二进制位，然后调用四次32位variable-precisionSWAR算法来计算这128个二进制位的汉明重量</div><div class="line"></div><div class="line">在执行bitcount命令时，程序会根据未处理的二进制位的数量来决定使用哪种算法</div><div class="line">如果未出的二进制位的数量大于等于128位，那么程序使用variable-precisionSWAR算法计算汉明重量</div><div class="line">如果未出的二进制位的数量小于128位，那么程序使用查表法计算汉明重量</div><div class="line"></div><div class="line">注释：时间复杂度位O(n)</div></pre></td></tr></table></figure></p><h4 id="bitop命令实现"><a href="#bitop命令实现" class="headerlink" title="bitop命令实现"></a>bitop命令实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">没什么好说的，和C语言一样的逻辑操作</div><div class="line">因为bitop and、bitop or、bitop xor三个命令可以接受多个位数作为输入，程序需要遍历输入的每个位数组的每个字节来进行计算，所有这些命令的复杂度位O(n^2)，与此相反，bitop not命令只接受一个位数组的输入，复杂度位O(n)</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;redis设计与实现之二进制位数组篇&quot;&gt;&lt;a href=&quot;#redis设计与实现之二进制位数组篇&quot; class=&quot;headerlink&quot; title=&quot;redis设计与实现之二进制位数组篇&quot;&gt;&lt;/a&gt;redis设计与实现之二进制位数组篇&lt;/h2&gt;&lt;p&gt;redis提
+      
+    
+    </summary>
+    
+    
+      <category term="redis" scheme="http://grooes.com/tags/redis/"/>
+    
+  </entry>
   
   <entry>
     <title>redis之数据结构篇</title>
