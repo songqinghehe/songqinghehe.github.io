@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/35.png">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/36.png">
 <meta property="og:image" content="https://github.com/songqinghehe/MyImage/raw/master/37.png">
-<meta property="og:updated_time" content="2017-10-10T13:35:39.720Z">
+<meta property="og:updated_time" content="2017-10-10T13:39:29.662Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis之持久化篇">
 <meta name="twitter:description" content="redis设计与实现之持久篇Redis有两种持久化方式:RDB持久化和AOF持久化，前者是通过把数据库状态的键值对保存起来，而AOF则是把命令保存起来,那么服务器是使用哪种持久化呢？因为AOF文件更新频率更高，所以优先AOF，接下来将分别介绍两种持久化方式">
@@ -412,13 +412,13 @@
 </blockquote>
 <ul>
 <li>AOF缓冲区的内容会定期被写人和同步到AOF文件，对现有AOF文件的处理工作如常进行</li>
-<li><p>从创建子进程开始，服务器执行的所有写命令都会被记录到AOF重写缓冲区里面.</p>
+<li>从创建子进程开始，服务器执行的所有写命令都会被记录到AOF重写缓冲区里面.</li>
+</ul>
 <blockquote>
 <p>当子进程完成AOF重写工作之后，它会向父进程发送一个信号,父进程在接到该信号后:</p>
 </blockquote>
-</li>
-<li><p>将AOF重写缓冲区中的所有内容写入到新AOF文件中，这时新AOF文件所保存的数据库状态将和服务器当前的数据库状态一致</p>
-</li>
+<ul>
+<li>将AOF重写缓冲区中的所有内容写入到新AOF文件中，这时新AOF文件所保存的数据库状态将和服务器当前的数据库状态一致</li>
 <li>对新的AOF文件进行改名，原子地(atomic)覆盖现有的AOF文件，完成新旧两个AOF文件的替换</li>
 </ul>
 <p>AOF 持久化的效率和安全性</p>
@@ -436,7 +436,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-10-10T13:35:39.720Z" itemprop="dateUpdated">2017-10-10 21:35:39</time>
+    最后更新时间：<time datetime="2017-10-10T13:39:29.662Z" itemprop="dateUpdated">2017-10-10 21:39:29</time>
 </span><br>
 
 
