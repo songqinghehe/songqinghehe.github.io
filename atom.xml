@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://grooes.com/"/>
-  <updated>2017-11-05T14:26:47.970Z</updated>
+  <updated>2017-11-05T14:44:51.003Z</updated>
   <id>http://grooes.com/</id>
   
   <author>
@@ -21,17 +21,15 @@
     <link href="http://grooes.com/2017/11/05/%E7%AE%97%E6%B3%95%E9%82%A3%E7%82%B9%E4%BA%8B%E5%84%BF/"/>
     <id>http://grooes.com/2017/11/05/算法那点事儿/</id>
     <published>2017-11-05T14:20:40.000Z</published>
-    <updated>2017-11-05T14:26:47.970Z</updated>
+    <updated>2017-11-05T14:44:51.003Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="算法题那点事儿"><a href="#算法题那点事儿" class="headerlink" title="算法题那点事儿"></a>算法题那点事儿</h3><blockquote><p>连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少</p></blockquote><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）</span></div><div class="line">$a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>];</div><div class="line">$x = <span class="number">0</span>;</div><div class="line">$y = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>($i=<span class="number">1</span>; $i&lt;=<span class="number">12</span>; $i++) &#123;</div><div class="line">    $y^=$i;</div><div class="line">&#125;</div><div class="line"><span class="keyword">foreach</span>($a <span class="keyword">as</span> $i) &#123;</div><div class="line">    $x^=$i;</div><div class="line">&#125;</div><div class="line"><span class="keyword">echo</span> $x^$y;<span class="comment">//5</span></div></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h3 id="算法题那点事儿"><a href="#算法题那点事儿" class="headerlink" title="算法题那点事儿"></a>算法题那点事儿</h3><h4 id="连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少"><a href="#连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少" class="headerlink" title="连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少"></a>连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）</span></div><div class="line">$a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>];</div><div class="line">$x = <span class="number">0</span>;</div><div class="line">$y = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>($i=<span class="number">1</span>; $i&lt;=<span class="number">12</span>; $i++) &#123;</div><div class="line">    $y^=$i;</div><div class="line">&#125;</div><div class="line"><span class="keyword">foreach</span>($a <span class="keyword">as</span> $i) &#123;</div><div class="line">    $x^=$i;</div><div class="line">&#125;</div><div class="line"><span class="keyword">echo</span> $x^$y;<span class="comment">//5</span></div></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h3 id=&quot;算法题那点事儿&quot;&gt;&lt;a href=&quot;#算法题那点事儿&quot; class=&quot;headerlink&quot; title=&quot;算法题那点事儿&quot;&gt;&lt;/a&gt;算法题那点事儿&lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少&lt;/p&gt;
-&lt;/
+        &lt;h3 id=&quot;算法题那点事儿&quot;&gt;&lt;a href=&quot;#算法题那点事儿&quot; class=&quot;headerlink&quot; title=&quot;算法题那点事儿&quot;&gt;&lt;/a&gt;算法题那点事儿&lt;/h3&gt;&lt;h4 id=&quot;连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少&quot;&gt;&lt;a href=&quot;#连续1
       
     
     </summary>
