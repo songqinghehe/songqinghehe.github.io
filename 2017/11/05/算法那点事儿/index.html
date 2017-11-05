@@ -20,18 +20,18 @@
     
     
     <meta name="keywords" content="php,interview,algorithm">
-    <meta name="description" content="算法题那点事儿 连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少1234567891011//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）$a = [1,2,3,4,8,6,7,9,10,11,12];$x = 0;$y = 0;for($i=1; $i&amp;lt;=12; $i++) &amp;#123;">
+    <meta name="description" content="算法题那点事儿 连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少  1234567891011//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）$a = [1,2,3,4,8,6,7,9,10,11,12];$x = 0;$y = 0;for($i=1; $i&amp;lt;=12; $i++) &amp;#123">
 <meta name="keywords" content="php,interview,algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法那点事儿">
 <meta property="og:url" content="http://grooes.com/2017/11/05/算法那点事儿/index.html">
 <meta property="og:site_name" content="Grooes.com">
-<meta property="og:description" content="算法题那点事儿 连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少1234567891011//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）$a = [1,2,3,4,8,6,7,9,10,11,12];$x = 0;$y = 0;for($i=1; $i&amp;lt;=12; $i++) &amp;#123;">
+<meta property="og:description" content="算法题那点事儿 连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少  1234567891011//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）$a = [1,2,3,4,8,6,7,9,10,11,12];$x = 0;$y = 0;for($i=1; $i&amp;lt;=12; $i++) &amp;#123">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-11-05T14:21:30.371Z">
+<meta property="og:updated_time" content="2017-11-05T14:26:47.970Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="算法那点事儿">
-<meta name="twitter:description" content="算法题那点事儿 连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少1234567891011//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）$a = [1,2,3,4,8,6,7,9,10,11,12];$x = 0;$y = 0;for($i=1; $i&amp;lt;=12; $i++) &amp;#123;">
+<meta name="twitter:description" content="算法题那点事儿 连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少  1234567891011//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）$a = [1,2,3,4,8,6,7,9,10,11,12];$x = 0;$y = 0;for($i=1; $i&amp;lt;=12; $i++) &amp;#123">
     
         <link rel="alternate" type="application/atom+xml" title="Grooes.com" href="/atom.xml">
     
@@ -209,16 +209,16 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h3 id="算法题那点事儿"><a href="#算法题那点事儿" class="headerlink" title="算法题那点事儿"></a>算法题那点事儿</h3><blockquote>
-<p>连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）</span></div><div class="line">$a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>];</div><div class="line">$x = <span class="number">0</span>;</div><div class="line">$y = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>($i=<span class="number">1</span>; $i&lt;=<span class="number">12</span>; $i++) &#123;</div><div class="line">    $y^=$i;</div><div class="line">&#125;</div><div class="line"><span class="keyword">foreach</span>($a <span class="keyword">as</span> $i) &#123;</div><div class="line">    $x^=$i;</div><div class="line">&#125;</div><div class="line"><span class="keyword">echo</span> $x^$y;<span class="comment">//5</span></div></pre></td></tr></table></figure></p>
+<p>连续1到n的数字缺少x，乱序存在一个数组中，找出这个x是多少</p>
 </blockquote>
-
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//异或有个很巧妙的地方：同一变量和该变量与另一变量的异或值的异或等于这个变量自身，最后计算下来时间复杂度为O(n),空间复杂度为O（1）</span></div><div class="line">$a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>];</div><div class="line">$x = <span class="number">0</span>;</div><div class="line">$y = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>($i=<span class="number">1</span>; $i&lt;=<span class="number">12</span>; $i++) &#123;</div><div class="line">    $y^=$i;</div><div class="line">&#125;</div><div class="line"><span class="keyword">foreach</span>($a <span class="keyword">as</span> $i) &#123;</div><div class="line">    $x^=$i;</div><div class="line">&#125;</div><div class="line"><span class="keyword">echo</span> $x^$y;<span class="comment">//5</span></div></pre></td></tr></table></figure>
         </div>
 
         <blockquote class="post-copyright">
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-11-05T14:21:30.371Z" itemprop="dateUpdated">2017-11-05 22:21:30</time>
+    最后更新时间：<time datetime="2017-11-05T14:26:47.970Z" itemprop="dateUpdated">2017-11-05 22:26:47</time>
 </span><br>
 
 
